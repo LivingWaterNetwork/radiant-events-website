@@ -5,7 +5,7 @@ export const siteConfig = {
   positioning: "Beauty without the burden.",
   oneLiner:
     "Intentional event planning and elevated design for celebrations that feel personal, polished, and effortless.",
-  url: "https://radianteventsatl.com",
+  url: "https://radianteventsplanning.com",
 
   // No verified contact details were supplied with the brand package.
   // Fill these in and flip hasContactInfo to true once real values exist.
