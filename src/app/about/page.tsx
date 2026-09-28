@@ -1,94 +1,77 @@
-import Link from "next/link";
 import type { Metadata } from "next";
-import PageHero from "@/components/sections/PageHero";
-import PlaceholderMedia from "@/components/PlaceholderMedia";
-import { Reveal } from "@/components/motion/Reveal";
-import { siteConfig } from "@/lib/site-config";
+import Picture from "@/components/Picture";
+import { Container, InquiryBand, Reveal, SectionHeading } from "@/components/sections";
+import { aboutCopy, getFounder } from "@/content/about";
+import { getImage } from "@/content/media";
+import { seo, site } from "@/content/site";
+import { pageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
-  title: "About",
-  description: `The story, philosophy, and people behind ${siteConfig.name}.`,
-};
+export const metadata: Metadata = pageMetadata(seo.about);
 
 export default function AboutPage() {
+  const c = aboutCopy;
+  const founder = getFounder();
+  const portrait = founder.portraitId ? getImage(founder.portraitId) : undefined;
+  const meetImage = portrait ?? getImage(c.meet.fallbackImageId);
+
   return (
-    <div>
-      <PageHero eyebrow="About" title="Planning with Purpose. Serving with Grace." mediaIndex={3} />
-
-      <section className="mx-auto max-w-3xl px-6 py-20">
-        <Reveal>
-          <p className="font-display italic text-2xl md:text-3xl text-aubergine text-center mb-10 leading-snug">
-            &ldquo;Beauty without the burden.&rdquo;
-          </p>
-          <p className="font-sans text-ink leading-relaxed mb-6">
-            {siteConfig.name} creates intentional, elevated celebrations for clients who want the
-            finished experience to feel effortless, personal, and beautifully resolved. We exist
-            to turn meaningful moments into polished, personal experiences — with calm leadership
-            behind the scenes and gracious service at every touchpoint.
-          </p>
-          <p className="font-sans text-ink leading-relaxed">
-            She values how the process feels as much as how the room looks. That belief shapes
-            everything we do: our goal isn&rsquo;t just a beautiful room, it&rsquo;s a client who
-            feels present, proud, and cared for on the day it matters most.
-          </p>
-        </Reveal>
+    <>
+      {/* Hero: the tagline section */}
+      <section aria-labelledby="about-title" className="border-b border-sand">
+        <Container className="py-16 md:py-24">
+          <p className="eyebrow">{c.title}</p>
+          <h1 id="about-title" className="tagline mt-4 text-5xl md:text-7xl">
+            {site.tagline}
+          </h1>
+          <p className="mt-8 max-w-3xl text-lg leading-relaxed text-ink md:text-xl">{c.intro}</p>
+        </Container>
       </section>
 
-      {/* Founder bio: placeholder pending real biography copy — see CONTENT_NEEDED.md */}
-      <section className="bg-cream px-6 py-20">
-        <div className="mx-auto max-w-4xl grid gap-10 md:grid-cols-2 items-center">
-          <PlaceholderMedia index={2} className="aspect-[4/5] rounded-sm" label="Founder portrait" />
+      <section aria-labelledby="meet" className="py-20 md:py-28">
+        <Container className="grid items-center gap-12 md:grid-cols-2 md:gap-16">
+          {meetImage && (
+            <Reveal className="overflow-hidden bg-sand">
+              <Picture
+                image={meetImage}
+                alt={portrait ? (founder.portraitAlt ?? meetImage.alt) : meetImage.alt}
+                sizes="(min-width: 768px) 45vw, 100vw"
+                className="block aspect-[4/5]"
+                imgClassName="h-full w-full object-cover"
+              />
+            </Reveal>
+          )}
           <Reveal>
-            <p className="font-sans uppercase tracking-wide-lg text-xs text-aubergine mb-3">
-              Meet The Team
-            </p>
-            <h2 className="font-display text-3xl text-ink mb-4">Founder &amp; Lead Planner</h2>
-            <p className="font-sans text-sm text-stone leading-relaxed mb-3">
-              A founder biography — background, approach to service, and what drew them to event
-              planning — belongs here. Placeholder pending real copy from the owner.
-            </p>
-            <p className="font-sans text-xs text-stone italic">
-              See CONTENT_NEEDED.md for what&rsquo;s needed to complete this section.
-            </p>
+            <SectionHeading id="meet" title={c.meet.title} />
+            <p className="mt-6 text-lg leading-relaxed text-ink">{c.meet.opening}</p>
+            {founder.story?.map((para) => (
+              <p key={para.slice(0, 32)} className="mt-5 text-lg leading-relaxed text-ink">
+                {para}
+              </p>
+            ))}
+            {founder.quote && (
+              <blockquote className="mt-8 border-l-2 border-olive pl-6">
+                <p className="h-display text-2xl">{founder.quote}</p>
+              </blockquote>
+            )}
           </Reveal>
-        </div>
+        </Container>
       </section>
 
-      <section className="px-6 py-20">
-        <div className="mx-auto max-w-5xl">
-          <Reveal className="text-center mb-14">
-            <p className="font-sans uppercase tracking-wide-lg text-xs text-aubergine mb-3">
-              Brand Pillars
-            </p>
-            <h2 className="font-display text-4xl text-ink">How We Work</h2>
-          </Reveal>
-          <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-4 text-center">
-            {[
-              { title: "Gracious", copy: "Warm and attentive, never overly familiar." },
-              { title: "Assured", copy: "Clear recommendations, offered without pressure." },
-              { title: "Refined", copy: "Elegant without ever sounding distant." },
-              { title: "Specific", copy: "We name the detail, the benefit, and the next step." },
-            ].map((v, i) => (
-              <Reveal key={v.title} delay={i * 0.08}>
-                <h3 className="font-display text-2xl text-aubergine mb-2">{v.title}</h3>
-                <p className="font-sans text-sm text-stone leading-relaxed">{v.copy}</p>
+      <section aria-labelledby="pillars" className="bg-white py-20 md:py-24">
+        <Container>
+          <SectionHeading id="pillars" title={c.pillarsTitle} />
+          <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {c.pillars.map((p, i) => (
+              <Reveal as="li" key={p.title} delay={i * 0.05} className="border-t-2 border-olive bg-ivory p-7">
+                <h3 className="h-display text-2xl">{p.title}</h3>
+                <p className="mt-3 leading-relaxed text-ink">{p.body}</p>
               </Reveal>
             ))}
-          </div>
-        </div>
+          </ul>
+        </Container>
       </section>
 
-      <section className="bg-aubergine text-cream-light">
-        <div className="mx-auto max-w-3xl px-6 py-20 text-center">
-          <h2 className="font-display text-4xl mb-6">Let&rsquo;s hold your celebration well.</h2>
-          <Link
-            href="/contact"
-            className="inline-block rounded-full bg-tangerine px-8 py-4 font-sans uppercase tracking-wide-lg text-sm text-ink hover:bg-coral transition-colors"
-          >
-            {siteConfig.primaryCta}
-          </Link>
-        </div>
-      </section>
-    </div>
+      <InquiryBand title={c.ctaBand} />
+    </>
   );
 }

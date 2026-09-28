@@ -1,109 +1,92 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import PageHero from "@/components/sections/PageHero";
-import PlaceholderMedia from "@/components/PlaceholderMedia";
-import { Reveal } from "@/components/motion/Reveal";
-import { services } from "@/content/services";
-import { siteConfig } from "@/lib/site-config";
+import Picture from "@/components/Picture";
+import { Container, InquiryBand, PageIntro, Reveal, SectionHeading } from "@/components/sections";
+import { homeCopy } from "@/content/home";
+import { getImage } from "@/content/media";
+import { getServices, servicesCopy } from "@/content/services";
+import { seo, site } from "@/content/site";
+import { pageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
-  title: "Services",
-  description:
-    "Planning + Coordination, Design + Room Styling, and Signature Installations for celebrations across Atlanta.",
-};
-
-const FAQS = [
-  {
-    question: "How do custom proposals work?",
-    answer:
-      "After an initial consultation, we scope your event and put together a proposal specific to your date, venue, and the services you need — there's no fixed package pricing.",
-  },
-  {
-    question: "Can I combine multiple services?",
-    answer:
-      "Yes — most full-scale celebrations combine Planning + Coordination with Design + Room Styling. Signature Installations can also stand alone.",
-  },
-  {
-    question: "Do you travel outside Atlanta?",
-    answer:
-      "We're based in Atlanta and primarily serve the surrounding area. Reach out with your location and we'll confirm availability.",
-  },
-];
+export const metadata: Metadata = pageMetadata(seo.services);
 
 export default function ServicesPage() {
+  const c = servicesCopy;
   return (
-    <div>
-      <PageHero
-        eyebrow="Services"
-        title="How We Help"
-        subtitle="Three ways to work with Radiant Events — chosen individually or combined into one fully considered experience."
-        mediaIndex={1}
-      />
+    <>
+      <PageIntro eyebrow={site.nav[0].label} title={c.intro.title} body={c.intro.body} />
 
-      <section className="mx-auto max-w-5xl px-6 py-20 space-y-24">
-        {services.map((service, i) => (
-          <div
-            key={service.slug}
-            className={`grid md:grid-cols-2 gap-10 items-center ${i % 2 === 1 ? "md:[&>*:first-child]:order-2" : ""}`}
-          >
-            <PlaceholderMedia index={i + 1} className="aspect-[4/5] rounded-sm" />
-            <Reveal>
-              <p className="font-display italic text-lg text-tangerine mb-2">{service.tagline}</p>
-              <h2 className="font-display text-3xl md:text-4xl text-aubergine mb-4">
-                {service.title}
-              </h2>
-              <p className="font-sans text-sm text-stone leading-relaxed mb-6">
-                {service.summary}
-              </p>
-              <ul className="space-y-2 mb-6">
-                {service.includes.slice(0, 3).map((item) => (
-                  <li key={item} className="flex items-start gap-2 font-sans text-sm text-ink">
-                    <span className="mt-2 h-1 w-1 rounded-full bg-tangerine flex-shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href={`/services/${service.slug}`}
-                className="font-sans text-sm uppercase tracking-wide-lg text-aubergine border-b border-tangerine hover:text-tangerine"
-              >
-                Learn More
-              </Link>
-            </Reveal>
-          </div>
-        ))}
+      <nav aria-label="Services on this page" className="border-y border-sand bg-white">
+        <Container>
+          <ul className="flex flex-wrap gap-x-8 gap-y-1 py-3">
+            {getServices().map((s) => (
+              <li key={s.id}>
+                <a href={`#${s.id}`} className="inline-flex min-h-11 items-center text-sm font-medium text-olive-deep underline-offset-4 hover:underline">
+                  {s.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </nav>
+
+      {getServices().map((s, i) => {
+        const img = getImage(s.imageId);
+        return (
+          <section key={s.id} id={s.id} aria-labelledby={`${s.id}-title`} className="scroll-mt-24 border-b border-sand py-16 md:py-24">
+            <Container className="grid items-center gap-10 md:grid-cols-2 md:gap-16">
+              {img && (
+                <Reveal className={`zoom-media overflow-hidden bg-sand ${i % 2 ? "md:order-2" : ""}`}>
+                  <Picture image={img} sizes="(min-width: 768px) 45vw, 100vw" className="block aspect-[4/5]" imgClassName="h-full w-full object-cover" />
+                </Reveal>
+              )}
+              <Reveal>
+                <SectionHeading id={`${s.id}-title`} title={s.title} body={s.lede} />
+                {s.deliverables.length > 0 && (
+                  <ul className="mt-6 space-y-3">
+                    {s.deliverables.map((d) => (
+                      <li key={d} className="flex gap-3 text-base leading-relaxed text-ink">
+                        <span aria-hidden="true" className="mt-3 h-px w-4 shrink-0 bg-olive" />
+                        {d}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <Link href={site.inquiryCta.href} className="btn btn-primary mt-8">
+                  {c.quoteCta}
+                </Link>
+              </Reveal>
+            </Container>
+          </section>
+        );
+      })}
+
+      <section aria-labelledby="included" className="bg-white py-16 md:py-20">
+        <Container className="max-w-4xl">
+          <SectionHeading id="included" title={c.included.title} body={c.included.body} />
+        </Container>
       </section>
 
-      <section className="bg-cream px-6 py-20">
-        <div className="mx-auto max-w-3xl">
-          <Reveal className="text-center mb-12">
-            <h2 className="font-display text-4xl text-ink">Common Questions</h2>
-          </Reveal>
-          <div className="space-y-8">
-            {FAQS.map((faq) => (
-              <Reveal key={faq.question}>
-                <h3 className="font-display text-xl text-aubergine mb-2">{faq.question}</h3>
-                <p className="font-sans text-sm text-stone leading-relaxed">{faq.answer}</p>
-              </Reveal>
+      <section aria-labelledby="faq" className="py-16 md:py-24">
+        <Container className="max-w-4xl">
+          <SectionHeading id="faq" title={c.faqTitle} />
+          <div className="mt-10 divide-y divide-sand border-y border-sand">
+            {c.faq.map((f) => (
+              <details key={f.q} className="group py-2">
+                <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-6 py-3 text-lg font-medium text-ink [&::-webkit-details-marker]:hidden">
+                  {f.q}
+                  <span aria-hidden="true" className="text-2xl leading-none text-olive-deep transition-transform group-open:rotate-45">
+                    +
+                  </span>
+                </summary>
+                <p className="pb-5 pr-10 leading-relaxed text-ink">{f.a}</p>
+              </details>
             ))}
           </div>
-        </div>
+        </Container>
       </section>
 
-      <section className="bg-aubergine text-cream-light">
-        <div className="mx-auto max-w-3xl px-6 py-20 text-center">
-          <h2 className="font-display text-4xl mb-6">Not sure which fits?</h2>
-          <p className="font-sans text-cream-light/90 mb-8">
-            Tell us about your celebration and we&rsquo;ll recommend the right level of support.
-          </p>
-          <Link
-            href="/contact"
-            className="inline-block rounded-full bg-tangerine px-8 py-4 font-sans uppercase tracking-wide-lg text-sm text-ink hover:bg-coral transition-colors"
-          >
-            {siteConfig.primaryCta}
-          </Link>
-        </div>
-      </section>
-    </div>
+      <InquiryBand title={homeCopy.inquiryBand.title} />
+    </>
   );
 }

@@ -1,61 +1,138 @@
 @import "tailwindcss";
 
+/* Treatment A · Ivory Garden (07-VISUAL-DIRECTION.md).
+   Contrast on ivory: olive 5.67, olive-deep 7.32, ink 13.2.
+   Taupe and sage fail for text — surfaces and lines only. */
 :root {
-  --color-aubergine: #6b183f;
-  --color-cream: #f7e7c6;
-  --color-cream-light: #fff8ea;
-  --color-tangerine: #f28a2e;
-  --color-blush: #e5acbf;
-  --color-coral: #f28266;
-  --color-ink: #21171b;
-  --color-ink-deep: #2a101b;
-  --color-taupe: #dcc5b9;
-  --color-stone: #7b6f72;
-
-  --background: var(--color-cream-light);
-  --foreground: var(--color-ink);
+  --ivory: #f8f6ee;
+  --sand: #e3d6c6;
+  --taupe: #b7a898;
+  --sage: #a7b096;
+  --olive: #59664a;
+  --ink: #2e2a24;
+  --olive-deep: #4a5539;
+  --white: #ffffff;
 }
 
 @theme inline {
-  --color-aubergine: var(--color-aubergine);
-  --color-cream: var(--color-cream);
-  --color-cream-light: var(--color-cream-light);
-  --color-tangerine: var(--color-tangerine);
-  --color-blush: var(--color-blush);
-  --color-coral: var(--color-coral);
-  --color-ink: var(--color-ink);
-  --color-ink-deep: var(--color-ink-deep);
-  --color-taupe: var(--color-taupe);
-  --color-stone: var(--color-stone);
+  --color-ivory: var(--ivory);
+  --color-sand: var(--sand);
+  --color-taupe: var(--taupe);
+  --color-sage: var(--sage);
+  --color-olive: var(--olive);
+  --color-ink: var(--ink);
+  --color-olive-deep: var(--olive-deep);
+  --color-white: var(--white);
 
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-
-  --font-display: var(--font-cormorant);
+  --font-display: var(--font-playfair);
   --font-sans: var(--font-montserrat);
+  --font-script: var(--font-allura);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
+  background: var(--ivory);
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
 }
 
-.font-display {
-  font-family: var(--font-display);
+:focus-visible {
+  outline: 2px solid var(--olive-deep);
+  outline-offset: 3px;
 }
 
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
-  outline: 2px solid var(--color-tangerine);
-  outline-offset: 4px;
-}
+@layer components {
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--olive-deep);
+  }
 
-@layer utilities {
-  .tracking-wide-lg {
-    letter-spacing: 0.18em;
+  .h-display {
+    font-family: var(--font-display);
+    font-weight: 500;
+    line-height: 1.1;
+    color: var(--ink);
+  }
+
+  .tagline {
+    font-family: var(--font-script);
+    font-size: 1.75rem; /* 28px minimum (07) */
+    line-height: 1.25;
+    color: var(--olive-deep);
+  }
+
+  .btn {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+    transition: background-color 200ms ease, color 200ms ease;
+  }
+  .btn-primary {
+    background: var(--olive);
+    color: var(--ivory);
+  }
+  .btn-primary:hover {
+    background: var(--olive-deep);
+  }
+  .btn-link {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--olive-deep);
+    text-decoration: underline;
+    text-decoration-color: var(--olive);
+    text-underline-offset: 6px;
+    text-decoration-thickness: 1px;
+  }
+  .btn-link:hover {
+    color: var(--ink);
+  }
+
+  .rule-leaf {
+    display: block;
+    width: 3rem;
+    height: 1px;
+    background: var(--olive);
+  }
+
+  .zoom-media img {
+    transition: transform 250ms ease;
+  }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .zoom-media:hover img {
+      transform: scale(1.03);
+    }
   }
 }

@@ -1,86 +1,55 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import PageHero from "@/components/sections/PageHero";
-import { Reveal } from "@/components/motion/Reveal";
-import { siteConfig } from "@/lib/site-config";
+import Picture from "@/components/Picture";
+import { Container, PageIntro, Reveal } from "@/components/sections";
+import { getImage, getVideo } from "@/content/media";
+import { processCopy } from "@/content/process";
+import { seo, site } from "@/content/site";
+import { pageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
-  title: "Process",
-  description: "A calm, considered client journey from first inquiry to final celebration.",
-};
-
-const STEPS = [
-  {
-    number: "01",
-    title: "Inquiry",
-    copy: "You reach out through the consultation form with the shape of your celebration — event type, date, and vision.",
-  },
-  {
-    number: "02",
-    title: "Consultation",
-    copy: "We talk through your vision, your guests, your budget, and what a resolved celebration feels like to you.",
-  },
-  {
-    number: "03",
-    title: "Concept + Scope",
-    copy: "We recommend the right services and put together a proposal specific to your event.",
-  },
-  {
-    number: "04",
-    title: "Planning + Design",
-    copy: "We translate the concept into a plan: palette, layout, vendors, and the specific details that will carry your day.",
-  },
-  {
-    number: "05",
-    title: "Production + Installation",
-    copy: "Vendors are booked, timelines built, and every logistical thread held so nothing is left to chance.",
-  },
-  {
-    number: "06",
-    title: "Celebration",
-    copy: "On the day itself, we lead quietly behind the scenes so you can be fully present in the room.",
-  },
-];
+export const metadata: Metadata = pageMetadata(seo.process);
 
 export default function ProcessPage() {
+  const c = processCopy;
+  const img = getImage(c.imageId);
+  const video = getVideo(c.videoId);
   return (
-    <div>
-      <PageHero
-        eyebrow="Process"
-        title="How We Work Together"
-        subtitle="A calm, considered path from first inquiry to final toast."
-        mediaIndex={0}
-      />
-
-      <section className="mx-auto max-w-4xl px-6 py-20">
-        <div className="space-y-16">
-          {STEPS.map((step, i) => (
-            <Reveal
-              key={step.number}
-              delay={Math.min(i * 0.05, 0.2)}
-              className="grid md:grid-cols-[auto_1fr] gap-6 md:gap-10 items-start"
-            >
-              <span className="font-display text-6xl text-blush leading-none">{step.number}</span>
+    <>
+      <PageIntro eyebrow={site.nav[2].label} title={c.title} body={c.intro} />
+      <Container className="grid gap-14 pb-20 md:grid-cols-[1fr_0.8fr] md:gap-20 md:pb-28">
+        <ol className="space-y-10">
+          {c.steps.map((s, i) => (
+            <Reveal as="li" key={s.title} className="grid grid-cols-[3rem_1fr] gap-4 border-t border-taupe pt-6">
+              <span className="h-display text-3xl text-olive-deep" aria-hidden="true">
+                {i + 1}
+              </span>
               <div>
-                <h2 className="font-display text-3xl text-aubergine mb-3">{step.title}</h2>
-                <p className="font-sans text-stone leading-relaxed max-w-xl">{step.copy}</p>
+                <h2 className="h-display text-2xl">
+                  <span className="sr-only">{i + 1}. </span>
+                  {s.title}
+                </h2>
+                <p className="mt-3 leading-relaxed text-ink">{s.body}</p>
               </div>
             </Reveal>
           ))}
-        </div>
-      </section>
-
-      <section className="bg-aubergine text-cream-light">
-        <div className="mx-auto max-w-3xl px-6 py-20 text-center">
-          <h2 className="font-display text-4xl mb-6">Ready to begin?</h2>
-          <Link
-            href="/contact"
-            className="inline-block rounded-full bg-tangerine px-8 py-4 font-sans uppercase tracking-wide-lg text-sm text-ink hover:bg-coral transition-colors"
-          >
-            {siteConfig.primaryCta}
+        </ol>
+        <div className="space-y-8 md:sticky md:top-28 md:self-start">
+          {img && (
+            <div className="overflow-hidden bg-sand">
+              <Picture image={img} sizes="(min-width: 768px) 40vw, 100vw" className="block aspect-[4/5]" imgClassName="h-full w-full object-cover" />
+            </div>
+          )}
+          {video && (
+            <video controls muted playsInline preload="none" poster={video.poster} width={video.width} height={video.height} className="h-auto w-full bg-sand" aria-label={video.alt}>
+              <source src={video.webm} type="video/webm" />
+              <source src={video.mp4} type="video/mp4" />
+            </video>
+          )}
+          <Link href={site.inquiryCta.href} className="btn btn-primary">
+            {site.inquiryCta.label}
           </Link>
         </div>
-      </section>
-    </div>
+      </Container>
+    </>
   );
 }

@@ -1,31 +1,41 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { siteConfig } from "@/lib/site-config";
+import { usePathname } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { site } from "@/content/site";
+import Wordmark from "./Wordmark";
 
 export default function SiteHeader() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
 
+  const close = useCallback((returnFocus = true) => {
+    setOpen(false);
+    if (returnFocus) toggleRef.current?.focus();
+  }, []);
+
   useEffect(() => {
     if (!open) return;
-
     const panel = panelRef.current;
-    const focusable = panel?.querySelectorAll<HTMLElement>("a, button");
-    focusable?.[0]?.focus();
+    const focusables = () => Array.from(panel?.querySelectorAll<HTMLElement>("a[href], button") ?? []);
+    focusables()[0]?.focus();
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
 
     function onKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") {
-        setOpen(false);
-        toggleRef.current?.focus();
+        e.preventDefault();
+        close();
         return;
       }
-      if (e.key !== "Tab" || !focusable || focusable.length === 0) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
+      if (e.key !== "Tab") return;
+      const items = focusables();
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
       if (e.shiftKey && document.activeElement === first) {
         e.preventDefault();
         last.focus();
@@ -34,60 +44,47 @@ export default function SiteHeader() {
         first.focus();
       }
     }
-
     document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, [open]);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [open, close]);
+
+  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
   return (
-    <header className="sticky top-0 z-50 bg-cream-light/95 backdrop-blur border-b border-taupe/40">
-      <div className="mx-auto max-w-6xl px-6 py-3 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
-          <Image
-            src="/brand/radiant-events-logo.png"
-            alt="Radiant Events Atlanta"
-            width={220}
-            height={140}
-            className="h-16 w-auto"
-            priority
-          />
-        </Link>
+    <header className="sticky top-0 z-40 border-b border-sand bg-ivory/95 backdrop-blur supports-[backdrop-filter]:bg-ivory/85">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-3 md:px-8">
+        <Wordmark onClick={() => setOpen(false)} />
 
-        <nav
-          aria-label="Primary"
-          className="hidden md:flex items-center gap-8 font-sans text-sm uppercase tracking-wide-lg text-ink"
-        >
-          {siteConfig.nav.map((link) => (
+        <nav aria-label="Primary" className="hidden items-center gap-7 lg:flex">
+          {site.nav.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="hover:text-aubergine transition-colors focus-visible:outline-2 focus-visible:outline-tangerine focus-visible:outline-offset-4 rounded-sm"
+              aria-current={isActive(link.href) ? "page" : undefined}
+              className="inline-flex min-h-11 items-center text-[0.8125rem] font-medium uppercase tracking-[0.12em] text-ink underline-offset-8 hover:text-olive-deep hover:underline aria-[current=page]:text-olive-deep aria-[current=page]:underline"
             >
               {link.label}
             </Link>
           ))}
-          <Link
-            href="/contact"
-            className="rounded-full bg-aubergine px-6 py-2.5 text-cream-light hover:bg-ink-deep transition-colors focus-visible:outline-2 focus-visible:outline-tangerine focus-visible:outline-offset-4"
-          >
-            {siteConfig.primaryCta}
+          <Link href={site.inquiryCta.href} className="btn btn-primary">
+            {site.inquiryCta.label}
           </Link>
         </nav>
 
         <button
           ref={toggleRef}
-          className="md:hidden text-ink focus-visible:outline-2 focus-visible:outline-tangerine focus-visible:outline-offset-4 rounded-sm"
-          aria-label={open ? "Close menu" : "Open menu"}
+          type="button"
+          className="inline-flex h-11 w-11 items-center justify-center text-ink lg:hidden"
+          aria-label={open ? site.menuLabels.close : site.menuLabels.open}
           aria-expanded={open}
           aria-controls="mobile-menu"
-          onClick={() => setOpen(!open)}
+          onClick={() => setOpen((o) => !o)}
         >
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            {open ? (
-              <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
-            ) : (
-              <path d="M3 6h18M3 12h18M3 18h18" strokeLinecap="round" />
-            )}
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+            <path d="M3 7h18M3 12h18M3 17h18" strokeLinecap="round" />
           </svg>
         </button>
       </div>
@@ -96,28 +93,38 @@ export default function SiteHeader() {
         <div
           id="mobile-menu"
           ref={panelRef}
-          className="md:hidden border-t border-taupe/40 bg-cream-light"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menu"
+          className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-ivory lg:hidden"
         >
-          <nav
-            aria-label="Mobile"
-            className="mx-auto max-w-6xl px-6 py-4 flex flex-col gap-4 font-sans text-sm uppercase tracking-wide-lg"
-          >
-            {siteConfig.nav.map((link) => (
+          <div className="flex items-center justify-between px-5 py-3">
+            <Wordmark onClick={() => close(false)} />
+            <button
+              type="button"
+              className="inline-flex h-11 w-11 items-center justify-center text-ink"
+              aria-label={site.menuLabels.close}
+              onClick={() => close()}
+            >
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
+              </svg>
+            </button>
+          </div>
+          <nav aria-label="Mobile" className="flex flex-1 flex-col justify-center gap-2 px-8 pb-16">
+            {site.nav.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                onClick={() => setOpen(false)}
-                className="hover:text-aubergine focus-visible:outline-2 focus-visible:outline-tangerine focus-visible:outline-offset-4 rounded-sm"
+                onClick={() => close(false)}
+                aria-current={isActive(link.href) ? "page" : undefined}
+                className="h-display py-2 text-3xl aria-[current=page]:text-olive-deep"
               >
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/contact"
-              onClick={() => setOpen(false)}
-              className="rounded-full bg-aubergine px-6 py-2.5 text-cream-light text-center focus-visible:outline-2 focus-visible:outline-tangerine focus-visible:outline-offset-4"
-            >
-              {siteConfig.primaryCta}
+            <Link href={site.inquiryCta.href} onClick={() => close(false)} className="btn btn-primary mt-8 self-start">
+              {site.inquiryCta.label}
             </Link>
           </nav>
         </div>
