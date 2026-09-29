@@ -11,8 +11,8 @@ for (const w of widths.split(",").map(Number)) {
       window.scrollTo(0, 0);
     });
     await page.waitForTimeout(700);
-    const name = (r === "/" ? "home" : r.slice(1).replace(/\//g, "_")) + `-${w}.png`;
-    await page.screenshot({ path: `${out}/${name}`, fullPage: true });
+    const name = (r === "/" ? "home" : r.slice(1).replace(/\//g, "_")) + `-${w}.jpg`;
+    await page.screenshot({ path: `${out}/${name}`, fullPage: true, type: "jpeg", quality: 60 });
     console.log(res?.status(), name);
   }
   await page.close();
