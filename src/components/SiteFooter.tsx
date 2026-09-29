@@ -1,75 +1,69 @@
-import Image from "next/image";
 import Link from "next/link";
-import { siteConfig } from "@/lib/site-config";
+import { getSocialLinks, site } from "@/content/site";
 
 export default function SiteFooter() {
+  const social = getSocialLinks();
+  const legal = [site.legal.privacy, site.legal.terms].filter(Boolean) as { href: string; label: string }[];
   return (
-    <footer className="bg-ink text-cream-light">
-      <div className="mx-auto max-w-6xl px-6 py-16 grid gap-12 md:grid-cols-3">
+    <footer className="border-t border-sand bg-ivory">
+      <div className="mx-auto grid max-w-7xl gap-10 px-5 py-14 md:grid-cols-[1.2fr_1fr] md:px-8">
         <div>
-          <Image
-            src="/brand/radiant-events-logo.png"
-            alt={`${siteConfig.name} ${siteConfig.location}`}
-            width={220}
-            height={140}
-            className="h-20 w-auto mb-4 brightness-0 invert opacity-90"
-          />
-          <p className="font-display italic text-lg text-blush">{siteConfig.tagline}</p>
+          <p className="h-display text-2xl text-olive-deep">{site.name}</p>
+          <p className="tagline mt-2">{site.tagline}</p>
+          <p className="mt-4 max-w-md text-sm leading-relaxed text-ink">{site.footer.blurb}</p>
+          <p className="mt-2 text-sm text-ink">{site.footer.serviceArea}</p>
+          {(site.contact.email || site.contact.phone) && (
+            <ul className="mt-4 space-y-1 text-sm">
+              {site.contact.email && (
+                <li>
+                  <a className="underline underline-offset-4" href={`mailto:${site.contact.email}`}>
+                    {site.contact.email}
+                  </a>
+                </li>
+              )}
+              {site.contact.phone && (
+                <li>
+                  <a className="underline underline-offset-4" href={`tel:${site.contact.phone.replace(/[^+\d]/g, "")}`}>
+                    {site.contact.phone}
+                  </a>
+                </li>
+              )}
+            </ul>
+          )}
         </div>
-
-        <div className="font-sans text-sm">
-          <h3 className="uppercase tracking-wide-lg text-tangerine mb-4">Explore</h3>
-          <ul className="space-y-2 text-cream/90">
-            {siteConfig.nav.map((link) => (
-              <li key={link.href}>
-                <Link href={link.href} className="hover:text-tangerine">
-                  {link.label}
+        <nav aria-label={site.navLabels.footer}>
+          <ul className="grid gap-x-8 sm:grid-cols-2">
+            {[...site.nav, site.inquiryCta].map((l) => (
+              <li key={l.href}>
+                <Link href={l.href} className="inline-flex min-h-11 items-center text-sm text-ink underline-offset-4 hover:text-olive-deep hover:underline">
+                  {l.label}
                 </Link>
               </li>
             ))}
-            <li>
-              <Link href="/contact" className="hover:text-tangerine">
-                Contact
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        <div className="font-sans text-sm">
-          <h3 className="uppercase tracking-wide-lg text-tangerine mb-4">Get In Touch</h3>
-          <ul className="space-y-2 text-cream/90">
-            <li>{siteConfig.location}</li>
-            {siteConfig.hasContactInfo && siteConfig.contact.email && (
-              <li>{siteConfig.contact.email}</li>
-            )}
-            {siteConfig.hasContactInfo && siteConfig.contact.phone && (
-              <li>{siteConfig.contact.phone}</li>
-            )}
-            <li>
-              <Link
-                href="/contact"
-                className="underline decoration-tangerine underline-offset-4 hover:text-tangerine"
-              >
-                {siteConfig.primaryCta}
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div className="border-t border-cream/10">
-        <div className="mx-auto max-w-6xl px-6 py-6 text-xs text-cream/60 font-sans flex flex-col sm:flex-row justify-between gap-2">
-          <span className="flex flex-wrap items-center gap-x-4 gap-y-1">
-            <span>
-              &copy; {new Date().getFullYear()} {siteConfig.name} {siteConfig.location.split(",")[0]}. All rights reserved.
-            </span>
-            {siteConfig.footerLegal.map((link) => (
-              <Link key={link.href} href={link.href} className="hover:text-tangerine">
-                {link.label}
-              </Link>
+            {social.map((l) => (
+              <li key={l.href}>
+                <a href={l.href} rel="noopener" className="inline-flex min-h-11 items-center text-sm text-ink underline-offset-4 hover:underline">
+                  {l.label}
+                </a>
+              </li>
             ))}
-          </span>
-          <span>{siteConfig.positioning}</span>
+          </ul>
+        </nav>
+      </div>
+      <div className="border-t border-sand">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-5 py-5 text-xs text-ink md:px-8">
+          <p>{site.footer.copyright}</p>
+          {legal.length > 0 && (
+            <ul className="flex gap-6">
+              {legal.map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="underline underline-offset-4">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </footer>

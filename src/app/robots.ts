@@ -1,12 +1,14 @@
 import type { MetadataRoute } from "next";
-import { siteConfig } from "@/lib/site-config";
+import { site } from "@/content/site";
+import { isProductionDeploy } from "@/lib/env";
 
 export default function robots(): MetadataRoute.Robots {
+  if (!isProductionDeploy()) {
+    // Previews and local builds are never indexed.
+    return { rules: { userAgent: "*", disallow: "/" } };
+  }
   return {
-    rules: {
-      userAgent: "*",
-      allow: "/",
-    },
-    sitemap: `${siteConfig.url}/sitemap.xml`,
+    rules: { userAgent: "*", allow: "/", disallow: ["/api/", "/privacy", "/terms"] },
+    sitemap: `${site.url}/sitemap.xml`,
   };
 }

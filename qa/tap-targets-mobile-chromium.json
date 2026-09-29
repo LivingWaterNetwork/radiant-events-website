@@ -1,0 +1,46 @@
+[
+  {
+    "route": "/",
+    "small": []
+  },
+  {
+    "route": "/services",
+    "small": []
+  },
+  {
+    "route": "/portfolio",
+    "small": []
+  },
+  {
+    "route": "/portfolio/pink-sweet-16-garden-celebration",
+    "small": []
+  },
+  {
+    "route": "/portfolio/she-rose-author-event",
+    "small": []
+  },
+  {
+    "route": "/process",
+    "small": []
+  },
+  {
+    "route": "/helpful-reads",
+    "small": []
+  },
+  {
+    "route": "/helpful-reads/how-to-build-a-cohesive-color-palette",
+    "small": []
+  },
+  {
+    "route": "/about",
+    "small": []
+  },
+  {
+    "route": "/contact",
+    "small": []
+  },
+  {
+    "route": "/does-not-exist",
+    "small": []
+  }
+]

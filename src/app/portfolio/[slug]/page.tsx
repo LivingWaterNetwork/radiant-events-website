@@ -1,95 +1,126 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import PageHero from "@/components/sections/PageHero";
-import PlaceholderMedia from "@/components/PlaceholderMedia";
-import { Reveal } from "@/components/motion/Reveal";
-import { portfolioProjects, getProjectBySlug } from "@/content/portfolio";
-import { siteConfig } from "@/lib/site-config";
+import Gallery from "@/components/Gallery";
+import Picture from "@/components/Picture";
+import { Container, Reveal, SectionHeading } from "@/components/sections";
+import { getProjectBySlug, getPublishedProjects, portfolioCopy } from "@/content/portfolio";
+import { projectTitleSuffix, site } from "@/content/site";
+import { pageMetadata } from "@/lib/page-metadata";
 
 export function generateStaticParams() {
-  return portfolioProjects.map((p) => ({ slug: p.slug }));
+  return getPublishedProjects().map((p) => ({ slug: p.slug }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
+export const dynamicParams = false;
+
+export async function generateMetadata({ params }: PageProps<"/portfolio/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const project = getProjectBySlug(slug);
-  if (!project) return {};
-  return { title: project.title };
+  const p = getProjectBySlug(slug);
+  if (!p) return {};
+  const og =
+    p.hero.kind === "image"
+      ? p.hero.image.variants.og
+        ? { url: `${p.hero.image.variants.og.base}-1200.jpg`, width: 1200, height: 630, alt: p.hero.image.alt }
+        : { url: `${p.hero.image.base}-1600.jpg`, width: 1600, height: Math.round((1600 * p.hero.image.height) / p.hero.image.width), alt: p.hero.image.alt }
+      : { url: p.hero.video.poster, width: p.hero.video.width, height: p.hero.video.height, alt: p.hero.video.alt };
+  return pageMetadata({ title: `${p.title}${projectTitleSuffix}`, description: p.summary, path: `/portfolio/${p.slug}` }, og);
 }
 
-export default async function PortfolioCaseStudyPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function ProjectPage({ params }: PageProps<"/portfolio/[slug]">) {
   const { slug } = await params;
-  const project = getProjectBySlug(slug);
-  if (!project) notFound();
+  const p = getProjectBySlug(slug);
+  if (!p) notFound();
+  const c = portfolioCopy;
 
   return (
-    <div>
-      <PageHero eyebrow={project.category} title={project.title} mediaIndex={3} />
+    <>
+      <Container className="pt-10 md:pt-14">
+        <Link href="/portfolio" className="btn-link">
+          <span aria-hidden="true">←&nbsp;</span>
+          {c.back}
+        </Link>
+      </Container>
 
-      <section className="mx-auto max-w-3xl px-6 py-16">
-        <div className="mb-8 rounded-sm border border-tangerine/40 bg-cream px-5 py-4 font-sans text-xs text-stone">
-          This is a placeholder case study demonstrating the page layout. Real project details,
-          photography, and outcomes will replace this content — see{" "}
-          <code className="text-aubergine">CONTENT_NEEDED.md</code>.
-        </div>
-        <Reveal>
-          <h2 className="font-display text-2xl text-aubergine mb-3">Overview</h2>
-          <p className="font-sans text-ink leading-relaxed mb-8">{project.overview}</p>
-
-          <h2 className="font-display text-2xl text-aubergine mb-3">The Challenge</h2>
-          <p className="font-sans text-ink leading-relaxed mb-8">{project.challenge}</p>
-
-          <h2 className="font-display text-2xl text-aubergine mb-3">Design Direction</h2>
-          <p className="font-sans text-ink leading-relaxed mb-8">{project.designDirection}</p>
-
-          <h2 className="font-display text-2xl text-aubergine mb-3">Services Provided</h2>
-          <ul className="space-y-2">
-            {project.servicesProvided.map((s) => (
-              <li key={s} className="flex items-start gap-2 font-sans text-sm text-ink">
-                <span className="mt-2 h-1 w-1 rounded-full bg-tangerine flex-shrink-0" />
-                {s}
-              </li>
-            ))}
-          </ul>
-        </Reveal>
-      </section>
-
-      <section className="mx-auto max-w-6xl px-6 py-16">
-        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-          {[0, 1, 2].map((i) => (
-            <PlaceholderMedia key={i} index={i} className="aspect-[4/5] rounded-sm" />
-          ))}
-        </div>
-      </section>
-
-      <section className="bg-aubergine text-cream-light">
-        <div className="mx-auto max-w-3xl px-6 py-20 text-center">
-          <h2 className="font-display text-4xl mb-6">Planning something similar?</h2>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link
-              href="/contact"
-              className="inline-block rounded-full bg-tangerine px-8 py-4 font-sans uppercase tracking-wide-lg text-sm text-ink hover:bg-coral transition-colors"
-            >
-              {siteConfig.primaryCta}
-            </Link>
-            <Link
-              href="/portfolio"
-              className="inline-block rounded-full border border-cream-light/50 px-8 py-4 font-sans uppercase tracking-wide-lg text-sm text-cream-light hover:bg-cream-light/10 transition-colors"
-            >
-              Back to Portfolio
-            </Link>
+      <section aria-labelledby="project-title">
+        <Container className="grid gap-10 pb-16 pt-8 md:grid-cols-[1fr_1.1fr] md:items-center md:gap-16 md:pb-24">
+          <div data-re-hero>
+            <p className="eyebrow">{p.eventType}</p>
+            <h1 id="project-title" className="h-display mt-4 text-4xl md:text-5xl">
+              {p.title}
+            </h1>
+            <p className="mt-6 text-lg leading-relaxed text-ink">{p.designStory}</p>
+            {p.locationNote && <p className="mt-4 text-sm text-ink">{p.locationNote}</p>}
+            <h2 className="eyebrow mt-10">{c.whatWeDid}</h2>
+            <ul className="mt-4 space-y-3">
+              {p.servicesDelivered.map((s) => (
+                <li key={s} className="flex gap-3 leading-relaxed text-ink">
+                  <span aria-hidden="true" className="mt-3 h-px w-4 shrink-0 bg-olive" />
+                  {s}
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
+          <div className="overflow-hidden bg-sand">
+            {p.hero.kind === "image" ? (
+              <Picture image={p.hero.image} sizes="(min-width: 768px) 50vw, 100vw" priority className="block aspect-[4/5]" imgClassName="h-full w-full object-cover" />
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element -- pipeline poster frame
+              <img src={p.hero.video.poster} alt={p.hero.video.alt} width={p.hero.video.width} height={p.hero.video.height} className="aspect-[4/5] w-full object-cover" fetchPriority="high" />
+            )}
+          </div>
+        </Container>
       </section>
-    </div>
+
+      {p.gallery.length > 1 && (
+        <section aria-labelledby="gallery" className="border-t border-sand py-16 md:py-24">
+          <Container>
+            <SectionHeading id="gallery" title={c.gallery} />
+            <div className="mt-10">
+              <Gallery images={p.gallery} labels={c.galleryLabels} />
+            </div>
+          </Container>
+        </section>
+      )}
+
+      {p.videos.length > 0 && (
+        <section aria-labelledby="video" className="border-t border-sand py-16 md:py-24">
+          <Container>
+            <SectionHeading id="video" title={c.video} />
+            <div className="mt-10 grid gap-8 md:grid-cols-2">
+              {p.videos.map((v) => (
+                <Reveal key={v.id}>
+                  <video
+                    controls
+                    muted
+                    playsInline
+                    preload="none"
+                    poster={v.poster}
+                    width={v.width}
+                    height={v.height}
+                    className="h-auto w-full bg-sand"
+                    aria-label={v.alt || p.title}
+                  >
+                    <source src={v.webm} type="video/webm" />
+                    <source src={v.mp4} type="video/mp4" />
+                  </video>
+                </Reveal>
+              ))}
+            </div>
+          </Container>
+        </section>
+      )}
+
+      <section aria-labelledby="project-cta" className="border-t border-sand bg-white">
+        <Container className="flex flex-col items-start gap-6 py-16 md:flex-row md:items-center md:justify-between">
+          <h2 id="project-cta" className="h-display text-3xl">
+            {c.closing.text}
+          </h2>
+          <Link href={site.inquiryCta.href} className="btn btn-primary">
+            {c.closing.cta}
+          </Link>
+        </Container>
+      </section>
+    </>
   );
 }

@@ -1,31 +1,21 @@
 import Link from "next/link";
-import { siteConfig } from "@/lib/site-config";
+import { Container } from "@/components/sections";
+import { notFoundCopy } from "@/content/site";
 
 export default function NotFound() {
   return (
-    <div className="mx-auto max-w-xl px-6 py-32 text-center">
-      <p className="font-sans uppercase tracking-wide-lg text-xs text-aubergine mb-4">404</p>
-      <h1 className="font-display text-4xl md:text-5xl text-ink mb-4">
-        This page hasn&rsquo;t been planned yet.
-      </h1>
-      <p className="font-sans text-stone mb-10">
-        The page you&rsquo;re looking for may have moved. Let&rsquo;s get you back to something
-        beautifully resolved.
-      </p>
-      <div className="flex flex-wrap justify-center gap-4">
-        <Link
-          href="/"
-          className="inline-block rounded-full bg-aubergine px-8 py-4 font-sans uppercase tracking-wide-lg text-sm text-cream-light hover:bg-ink-deep transition-colors"
-        >
-          Return Home
-        </Link>
-        <Link
-          href="/contact"
-          className="inline-block rounded-full border border-aubergine px-8 py-4 font-sans uppercase tracking-wide-lg text-sm text-aubergine hover:bg-cream transition-colors"
-        >
-          {siteConfig.primaryCta}
-        </Link>
-      </div>
-    </div>
+    <Container className="py-24 md:py-32" data-re-hero>
+      <h1 className="h-display text-4xl md:text-6xl">{notFoundCopy.title}</h1>
+      <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink">{notFoundCopy.body}</p>
+      <ul className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+        {notFoundCopy.links.map((l, i) => (
+          <li key={l.href}>
+            <Link href={l.href} className={i === 0 ? "btn btn-primary" : "btn-link"}>
+              {l.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </Container>
   );
 }

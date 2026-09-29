@@ -1,149 +1,186 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import PlaceholderMedia from "@/components/PlaceholderMedia";
-import HomeHero from "@/components/sections/HomeHero";
-import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
-import { siteConfig } from "@/lib/site-config";
+import { SplitWords } from "@/components/BrandIntro";
+import HeroVideo from "@/components/HeroVideo";
+import Picture from "@/components/Picture";
+import { Container, InquiryBand, ProjectCard, Reveal, SectionHeading } from "@/components/sections";
+import { getFounder } from "@/content/about";
+import { homeCopy } from "@/content/home";
+import { getImage, getVideo } from "@/content/media";
+import { getFeaturedProjects } from "@/content/portfolio";
+import { getServices } from "@/content/services";
+import { seo, site } from "@/content/site";
+import { pageMetadata } from "@/lib/page-metadata";
 
 export const metadata: Metadata = {
-  title: "Radiant Events | Atlanta Event Planning & Design",
-  description: siteConfig.oneLiner,
+  ...pageMetadata(seo.home),
+  title: { absolute: seo.home.title },
 };
 
-const SERVICES = [
-  {
-    title: "Planning + Coordination",
-    href: "/services/planning-coordination",
-    copy: "Full-service planning or month-of coordination — timelines, vendors, and logistics handled with calm precision.",
-  },
-  {
-    title: "Design + Room Styling",
-    href: "/services/design-room-styling",
-    copy: "Concept, palette, and room design carried through to a cohesive, elevated finished space.",
-  },
-  {
-    title: "Signature Installations",
-    href: "/services/signature-installations",
-    copy: "Balloon installations, luxury tablescapes, draping, and custom backdrops built for a single, striking moment.",
-  },
-];
+export default function HomePage() {
+  const c = homeCopy;
+  const heroImage = getImage(c.hero.imageId);
+  const heroVideo = getVideo(c.hero.videoId);
+  const aboutImage = getImage(c.about.imageId);
+  const featured = getFeaturedProjects();
+  const founder = getFounder();
+  const [lead, ...rest] = featured;
 
-export default function Home() {
   return (
-    <div>
-      <HomeHero />
-
-      {/* One-liner / positioning */}
-      <section className="mx-auto max-w-3xl px-6 py-20 text-center">
-        <Reveal>
-          <p className="font-display italic text-2xl md:text-3xl text-aubergine leading-snug">
-            &ldquo;Radiance is not excess. It is the feeling that everything has been
-            considered.&rdquo;
-          </p>
-        </Reveal>
-      </section>
-
-      {/* Services teaser */}
-      <section className="bg-cream px-6 py-20">
-        <div className="mx-auto max-w-6xl">
-          <Reveal className="text-center mb-14">
-            <p className="font-sans uppercase tracking-wide-lg text-xs text-aubergine mb-3">
-              What We Do
-            </p>
-            <h2 className="font-display text-4xl md:text-5xl text-ink">Our Services</h2>
-          </Reveal>
-          <Stagger className="grid gap-10 md:grid-cols-3">
-            {SERVICES.map((service) => (
-              <StaggerItem key={service.title} className="text-center">
-                <Link href={service.href} className="group">
-                  <h3 className="font-display text-2xl text-aubergine mb-3 group-hover:text-tangerine transition-colors">
-                    {service.title}
-                  </h3>
-                  <p className="font-sans text-sm text-stone leading-relaxed">{service.copy}</p>
-                </Link>
-              </StaggerItem>
-            ))}
-          </Stagger>
-          <div className="text-center mt-14">
-            <Link
-              href="/services"
-              className="font-sans text-sm uppercase tracking-wide-lg text-aubergine border-b border-tangerine hover:text-tangerine"
-            >
-              View All Services
-            </Link>
+    <>
+      {/* 1. Hero */}
+      <section aria-labelledby="hero-title" className="border-b border-sand">
+        <div className="mx-auto grid max-w-[1600px] lg:min-h-[calc(100svh-4.5rem)] lg:grid-cols-[1fr_1.1fr]">
+          <div data-re-hero className="order-2 flex flex-col justify-center px-5 py-12 md:px-8 lg:order-1 lg:py-16 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] lg:pr-12">
+            <p className="eyebrow mb-5">{c.hero.eyebrow}</p>
+            <h1 id="hero-title" data-re-split className="h-display text-[2.6rem] sm:text-5xl xl:text-7xl">
+              <SplitWords text={c.hero.title} />
+            </h1>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink">{c.hero.support}</p>
+            <p className="tagline mt-6">{site.tagline}</p>
+            <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
+              <Link href={site.inquiryCta.href} className="btn btn-primary">
+                {site.inquiryCta.label}
+              </Link>
+              <Link href={site.workCta.href} className="btn-link">
+                {site.workCta.label}
+              </Link>
+            </div>
           </div>
+          {heroImage && (
+            <div className="relative order-1 aspect-[4/5] overflow-hidden bg-sand md:aspect-[3/2] lg:order-2 lg:aspect-auto">
+              <Picture
+                image={heroImage}
+                desktop={heroImage.variants["hero-desktop"]}
+                mobile={heroImage.variants["hero-mobile"]}
+                mobileQuery="(max-width: 767px), (min-width: 1024px)"
+                sizes="(min-width: 1024px) 55vw, 100vw"
+                priority
+                className="block h-full w-full"
+                imgClassName="h-full w-full object-cover"
+              />
+              {heroVideo && <HeroVideo video={heroVideo} pauseLabel={c.hero.pauseLabel} playLabel={c.hero.playLabel} />}
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Portfolio teaser */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <Reveal className="text-center mb-14">
-          <p className="font-sans uppercase tracking-wide-lg text-xs text-aubergine mb-3">
-            Recent Work
-          </p>
-          <h2 className="font-display text-4xl md:text-5xl text-ink">Celebrations We&rsquo;ve Held</h2>
-        </Reveal>
-        <Stagger className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
-          {[0, 1, 2, 3].map((i) => (
-            <StaggerItem key={i}>
-              <PlaceholderMedia index={i} className="aspect-[3/4] rounded-sm" />
-            </StaggerItem>
-          ))}
-        </Stagger>
-        <div className="text-center mt-14">
-          <Link
-            href="/portfolio"
-            className="font-sans text-sm uppercase tracking-wide-lg text-aubergine border-b border-tangerine hover:text-tangerine"
-          >
-            View Full Portfolio
-          </Link>
-        </div>
-      </section>
-
-      {/* Process teaser */}
-      <section className="bg-ink py-16">
-        <div className="mx-auto max-w-6xl px-6 flex flex-wrap items-center justify-center gap-x-14 gap-y-4 text-cream-light/70 font-display italic text-xl text-center">
-          <span>Purpose</span>
-          <span className="hidden md:inline text-tangerine">&bull;</span>
-          <span>Radiance</span>
-          <span className="hidden md:inline text-tangerine">&bull;</span>
-          <span>Grace</span>
-          <span className="hidden md:inline text-tangerine">&bull;</span>
-          <span>Precision</span>
-        </div>
-      </section>
-
-      {/* Testimonials — withheld until real, attributable client quotes are supplied. See CONTENT_NEEDED.md */}
-      {siteConfig.showTestimonials && (
-        <section className="mx-auto max-w-5xl px-6 py-20">
-          <Reveal className="text-center mb-14">
-            <p className="font-sans uppercase tracking-wide-lg text-xs text-aubergine mb-3">
-              Kind Words
-            </p>
-            <h2 className="font-display text-4xl md:text-5xl text-ink">From Our Clients</h2>
+      {/* 2. About Radiant */}
+      <section aria-labelledby="home-about" className="py-20 md:py-28">
+        <Container className="grid items-center gap-12 md:grid-cols-2 md:gap-16">
+          {aboutImage && (
+            <Reveal className="zoom-media overflow-hidden bg-sand">
+              <Picture image={aboutImage} sizes="(min-width: 768px) 45vw, 100vw" imgClassName="h-full w-full object-cover" className="block aspect-[4/5]" />
+            </Reveal>
+          )}
+          <Reveal>
+            <SectionHeading id="home-about" title={c.about.title} />
+            <p className="mt-6 text-lg leading-relaxed text-ink">{c.about.body}</p>
+            <Link href={c.about.link.href} className="btn-link mt-6">
+              {c.about.link.label} <span aria-hidden="true">&nbsp;→</span>
+            </Link>
           </Reveal>
+        </Container>
+      </section>
+
+      {/* 3. What we do */}
+      <section aria-labelledby="home-services" className="bg-white/60 py-20 md:py-24">
+        <Container>
+          <h2 id="home-services" className="sr-only">
+            {c.whatWeDo.title}
+          </h2>
+          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {getServices().map((s, i) => (
+              <Reveal as="li" key={s.id} delay={i * 0.05} className="relative border-t-2 border-olive bg-white p-7">
+                <h3 className="h-display text-2xl">
+                  <Link href={`/services#${s.id}`} className="after:absolute after:inset-0 hover:text-olive-deep">
+                    {s.title}
+                  </Link>
+                </h3>
+                <p className="mt-4 text-sm leading-relaxed text-ink">{s.cardSummary}</p>
+              </Reveal>
+            ))}
+          </ul>
+        </Container>
+      </section>
+
+      {/* 4. Our work */}
+      {lead && (
+        <section aria-labelledby="home-work" className="py-20 md:py-28">
+          <Container>
+            <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+              <SectionHeading id="home-work" title={c.work.title} body={c.work.body} />
+              <Link href={c.work.link.href} className="btn-link">
+                {c.work.link.label}
+              </Link>
+            </div>
+            <div className="mt-12 grid gap-10 md:grid-cols-[1.35fr_1fr] md:gap-12">
+              <Reveal>
+                <ProjectCard project={lead} sizes="(min-width: 768px) 55vw, 100vw" />
+              </Reveal>
+              <div className="grid gap-10">
+                {rest.map((p, i) => (
+                  <Reveal key={p.id} delay={0.05 * (i + 1)}>
+                    <ProjectCard project={p} sizes="(min-width: 768px) 40vw, 100vw" aspect="aspect-[3/2]" />
+                  </Reveal>
+                ))}
+              </div>
+            </div>
+          </Container>
         </section>
       )}
 
-      {/* Final CTA */}
-      <section className="bg-aubergine text-cream-light">
-        <div className="mx-auto max-w-3xl px-6 py-24 text-center">
-          <Reveal>
-            <h2 className="font-display text-4xl md:text-5xl mb-6">
-              You bring the reason to celebrate.
-            </h2>
-            <p className="font-sans text-cream-light/90 mb-10">
-              We bring the plan, the polish, and the calm presence that lets you enjoy it.
-            </p>
-            <Link
-              href="/contact"
-              className="inline-block rounded-full bg-tangerine px-8 py-4 font-sans uppercase tracking-wide-lg text-sm text-ink hover:bg-coral transition-colors"
-            >
-              {siteConfig.primaryCta}
-            </Link>
-          </Reveal>
-        </div>
+      {/* 5. Range strip */}
+      <section aria-label={c.range.label} className="border-y border-sand bg-white py-8">
+        <Container>
+          <ul className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-center text-xs font-medium uppercase tracking-[0.2em] text-olive-deep md:text-sm">
+            {c.range.items.map((item, i) => (
+              <li key={item} className="flex items-center gap-3">
+                {item}
+                {i < c.range.items.length - 1 && (
+                  <span aria-hidden="true" className="text-olive">
+                    ·
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </Container>
       </section>
-    </div>
+
+      {/* 6. Experience */}
+      <section aria-labelledby="home-experience" className="py-20 md:py-28">
+        <Container>
+          <SectionHeading id="home-experience" title={c.experience.title} />
+          <ol className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
+            {c.experience.steps.map((step, i) => (
+              <Reveal as="li" key={step} delay={i * 0.04} className="border-t border-taupe pt-5">
+                <span className="h-display block text-3xl text-olive-deep" aria-hidden="true">
+                  {i + 1}
+                </span>
+                <span className="sr-only">
+                  {site.stepLabel} {i + 1}:{" "}
+                </span>
+                <span className="mt-3 block text-base leading-snug text-ink">{step}</span>
+              </Reveal>
+            ))}
+          </ol>
+          <Link href={c.experience.link.href} className="btn-link mt-10">
+            {c.experience.link.label}
+          </Link>
+        </Container>
+      </section>
+
+      {/* 7. Values moment */}
+      <section aria-label={site.tagline} className="bg-sand/60 py-20 md:py-24">
+        <Container className="text-center">
+          <p className="tagline text-4xl md:text-5xl">{site.tagline}</p>
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ink">{founder.quote ?? c.values.line}</p>
+        </Container>
+      </section>
+
+      {/* 8. Inquiry band */}
+      <InquiryBand title={c.inquiryBand.title} />
+    </>
   );
 }

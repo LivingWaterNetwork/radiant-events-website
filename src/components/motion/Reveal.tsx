@@ -1,104 +1,40 @@
 "use client";
 
-import { motion, useReducedMotion, type Variants } from "framer-motion";
-import { ReactNode } from "react";
+import { LazyMotion, domAnimation, m, useReducedMotion } from "framer-motion";
+import type { ReactNode } from "react";
 
-const EASE = [0.16, 1, 0.3, 1] as const;
+// Restrained motion (07): a short fade-and-rise, ≤ 250 ms, off under reduced motion.
+const DURATION = 0.25;
 
 export function Reveal({
   children,
-  delay = 0,
-  y = 24,
   className = "",
+  delay = 0,
   as = "div",
 }: {
   children: ReactNode;
-  delay?: number;
-  y?: number;
   className?: string;
-  as?: "div" | "span";
+  delay?: number;
+  as?: "div" | "li" | "section";
 }) {
-  const shouldReduceMotion = useReducedMotion();
-  const Component = motion[as];
-
-  const variants: Variants = shouldReduceMotion
-    ? { hidden: { opacity: 1, y: 0 }, visible: { opacity: 1, y: 0 } }
-    : {
-        hidden: { opacity: 0, y },
-        visible: {
-          opacity: 1,
-          y: 0,
-          transition: { duration: 0.7, delay, ease: EASE },
-        },
-      };
-
+  const reduce = useReducedMotion();
+  const Component = m[as];
+  if (reduce) {
+    const Static = as;
+    return <Static className={className}>{children}</Static>;
+  }
   return (
+    <LazyMotion features={domAnimation} strict>
     <Component
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
-      variants={variants}
+      data-reveal=""
       className={className}
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+      transition={{ duration: DURATION, delay: Math.min(delay, 0.15), ease: "easeOut" }}
     >
       {children}
     </Component>
-  );
-}
-
-export function Stagger({
-  children,
-  className = "",
-  gap = 0.08,
-}: {
-  children: ReactNode;
-  className?: string;
-  gap?: number;
-}) {
-  const shouldReduceMotion = useReducedMotion();
-
-  const container: Variants = {
-    hidden: {},
-    visible: {
-      transition: shouldReduceMotion
-        ? {}
-        : { staggerChildren: gap, delayChildren: 0.05 },
-    },
-  };
-
-  return (
-    <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
-      variants={container}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-export function StaggerItem({
-  children,
-  className = "",
-  y = 20,
-}: {
-  children: ReactNode;
-  className?: string;
-  y?: number;
-}) {
-  const shouldReduceMotion = useReducedMotion();
-
-  const item: Variants = shouldReduceMotion
-    ? { hidden: { opacity: 1, y: 0 }, visible: { opacity: 1, y: 0 } }
-    : {
-        hidden: { opacity: 0, y },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
-      };
-
-  return (
-    <motion.div variants={item} className={className}>
-      {children}
-    </motion.div>
+    </LazyMotion>
   );
 }

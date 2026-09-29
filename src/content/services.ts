@@ -1,136 +1,110 @@
-export type ServiceDetail = {
-  slug: string;
+// Services content. Source: 03 Services + Home "What we do"; status: 02-SERVICE-TRUTH-MATRIX.md.
+// Image pairings: 06-ASSET-MANIFEST.md "Suggested Services-page images".
+
+export type Service = {
+  id: string;
   title: string;
-  tagline: string;
-  summary: string;
-  idealFor: string;
-  outcomes: string[];
-  includes: string[];
-  process: string[];
-  faq: { question: string; answer: string }[];
+  /** Home "What we do" card copy. */
+  cardSummary: string;
+  lede: string;
+  deliverables: string[];
+  imageId: string;
 };
 
-export const services: ServiceDetail[] = [
+export const services: Service[] = [
   {
-    slug: "planning-coordination",
-    title: "Planning + Coordination",
-    tagline: "Calm leadership behind the scenes.",
-    summary:
-      "From save-the-date to send-off, we build the timeline, manage the vendor team, and hold every logistical thread so you don't have to.",
-    idealFor:
-      "Hosts who want a trusted partner to manage logistics — whether from the very first booking or starting a month out from the event.",
-    outcomes: [
-      "A clear, protected timeline everyone actually follows",
-      "A vendor team that communicates through one point of contact",
-      "A day that runs on schedule without you managing it",
-    ],
-    includes: [
+    id: "planning-coordination",
+    title: "Event Planning & Coordination",
+    cardSummary:
+      "Full planning or focused coordination, with timelines, vendors, and event-day details held with calm and care.",
+    lede: "Calm leadership behind the scenes, whether it's a family milestone or a multi-day conference.",
+    deliverables: [
       "Full-service planning, from concept through event day",
-      "Month-of / day-of coordination",
-      "Vendor sourcing, contracting, and management",
-      "Budget tracking and timeline management",
-      "On-site lead coordination and run-of-show",
+      "Partial planning and month-of or day-of coordination",
+      "Timelines, run-of-show, and vendor coordination",
+      "Event-day management and on-site direction",
     ],
-    process: [
-      "Initial consultation to understand your vision and scope",
-      "Planning framework and vendor recommendations",
-      "Ongoing check-ins as details are confirmed",
-      "Final walkthrough and timeline lock",
-      "On-site coordination on the day itself",
-    ],
-    faq: [
-      {
-        question: "How far in advance should we book?",
-        answer:
-          "Full-service planning works best starting 9–12 months out; month-of coordination is typically booked 4–6 weeks before the event.",
-      },
-      {
-        question: "Do you work with our existing vendors?",
-        answer:
-          "Yes. We're happy to coordinate with vendors you've already booked, or recommend trusted partners from our network.",
-      },
-    ],
+    imageId: "E03-01",
   },
   {
-    slug: "design-room-styling",
-    title: "Design + Room Styling",
-    tagline: "The room, resolved.",
-    summary:
-      "We develop a concept and palette specific to your celebration and carry it through every surface — florals, linens, lighting, and layout — into one cohesive, elevated space.",
-    idealFor:
-      "Clients who have a venue and vision but want a designer's eye to unify the details into one considered look.",
-    outcomes: [
-      "A cohesive design language across every surface in the room",
-      "A floor plan that supports both flow and photography",
-      "A space that photographs as intentionally as it feels in person",
+    id: "balloon-backdrop-installations",
+    title: "Balloon & Backdrop Installations",
+    cardSummary:
+      "Organic arches, garlands, columns, and backdrops, designed for your space and built on site.",
+    lede: "Organic balloon arches, garlands, and columns, plus custom backdrops, designed in your colors and installed on site.",
+    deliverables: [
+      "Arches, garlands, and columns",
+      "Ribbon-fringe, shimmer-wall, and floral backdrops",
+      "Photo moments and entry statements",
     ],
-    includes: [
-      "Concept development and mood boards",
-      "Color palette and material selection",
-      "Floor plans and room layout design",
-      "Floral, linen, and rental sourcing",
-      "On-site styling and final walkthrough",
-    ],
-    process: [
-      "Design consultation and inspiration review",
-      "Concept presentation with palette and mood board",
-      "Vendor and rental sourcing against the approved concept",
-      "On-site styling and final detail pass before guest arrival",
-    ],
-    faq: [
-      {
-        question: "Can this be paired with planning services?",
-        answer:
-          "Yes — many clients combine design with full planning. It can also stand alone if you're managing logistics yourself.",
-      },
-      {
-        question: "Do you provide rentals directly?",
-        answer:
-          "We source and manage rentals through our trusted vendor network rather than holding inventory ourselves.",
-      },
-    ],
+    imageId: "E01-05",
   },
   {
-    slug: "signature-installations",
-    title: "Signature Installations",
-    tagline: "One striking moment, built to spec.",
-    summary:
-      "For clients who need a single showpiece rather than full planning — a balloon installation, a luxury tablescape, dramatic draping, or a custom backdrop, designed and installed with precision.",
-    idealFor:
-      "Clients who have a planner already, or need one exceptional focal moment rather than full-scope design.",
-    outcomes: [
-      "A single, photograph-ready focal moment",
-      "Professional installation and clean breakdown",
-      "A custom piece built to your event's exact dimensions and palette",
-    ],
-    includes: [
-      "Balloon installations and sculptural pieces",
-      "Luxury tablescapes and place settings",
+    id: "event-decor-styling",
+    title: "Event Décor & Styling",
+    cardSummary: "Tablescapes, florals, draping, and styled details that tie the whole room together.",
+    lede: "Tablescapes, florals, draping, and styled details that carry your theme through every surface.",
+    deliverables: [
+      "Tablescapes and place settings",
+      "Floral styling and flower walls",
       "Draping and room transformation",
-      "Custom backdrops and photo moments",
-      "Delivery, install, and breakdown",
+      "Signage styling and themed accents",
     ],
-    process: [
-      "Scope and site details confirmed (dimensions, access, timing)",
-      "Concept and material approval",
-      "Installation ahead of guest arrival",
-      "Same-day or next-day breakdown",
-    ],
-    faq: [
-      {
-        question: "How much lead time do installations need?",
-        answer:
-          "Most signature installations are booked 3–6 weeks out, depending on materials and scale.",
-      },
-      {
-        question: "Can you install at any venue?",
-        answer:
-          "In most cases, yes — we'll confirm venue access, load-in timing, and any restrictions during scoping.",
-      },
-    ],
+    imageId: "E04-02",
+  },
+  {
+    id: "custom-design-details",
+    title: "Custom Design Details",
+    cardSummary: "Signage, themed accents, and one-of-a-kind touches made for your celebration.",
+    lede: "Something specific in mind? We love a creative brief. Tell us the idea and we'll bring it to life.",
+    deliverables: [],
+    imageId: "E02-01",
   },
 ];
 
-export function getServiceBySlug(slug: string) {
-  return services.find((s) => s.slug === slug);
+export const servicesCopy = {
+  intro: {
+    title: "Planning, design, and installations, together or on their own.",
+    body: "Choose the support you need, or combine services into one considered experience. Tell us what you have in mind, and we'll shape a plan for your date, venue, and priorities.",
+  },
+  quoteCta: "Request a Custom Quote",
+  included: {
+    title: "What's included",
+    body: "Delivery, setup, and installation are included. Takedown or pickup is provided when included in your approved proposal.",
+  },
+  faqTitle: "Questions we're often asked",
+  faq: [
+    {
+      q: "How does pricing work?",
+      a: "Every event is quoted to your date, venue, guest count, and scope, so there are no fixed packages. Share your details and a budget range, and we'll recommend what fits.",
+    },
+    {
+      q: "Can I combine services?",
+      a: "Yes. Many clients pair planning with design and installations, and any service can also stand alone.",
+    },
+    {
+      q: "Do you handle large events?",
+      a: "Yes. We've supported everything from intimate gatherings to church conferences and events of 5,000 guests.",
+    },
+    { q: "Do you do weddings?", a: "Yes. Tell us about your date, venue, and vision." },
+    {
+      q: "Where do you work?",
+      a: "We're based in the Atlanta area. Share your location and we'll confirm availability.",
+    },
+  ],
+};
+
+export function getServices() {
+  return services;
 }
+
+export function getServiceById(id: string) {
+  return services.find((s) => s.id === id);
+}
+
+/** Old /services/:slug sub-pages → anchors on /services. */
+export const legacyServiceRedirects: Record<string, string> = {
+  "planning-coordination": "planning-coordination",
+  "design-room-styling": "event-decor-styling",
+  "signature-installations": "balloon-backdrop-installations",
+};
