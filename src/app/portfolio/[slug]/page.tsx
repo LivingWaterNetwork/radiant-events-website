@@ -44,7 +44,7 @@ export default async function ProjectPage({ params }: PageProps<"/portfolio/[slu
 
       <section aria-labelledby="project-title">
         <Container className="grid gap-10 pb-16 pt-8 md:grid-cols-[1fr_1.1fr] md:items-center md:gap-16 md:pb-24">
-          <div>
+          <div data-re-hero>
             <p className="eyebrow">{p.eventType}</p>
             <h1 id="project-title" className="h-display mt-4 text-4xl md:text-5xl">
               {p.title}

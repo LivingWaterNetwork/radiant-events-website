@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Allura, Montserrat, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import BrandIntro from "@/components/BrandIntro";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { getLocalBusinessJsonLd, seo, site } from "@/content/site";
@@ -36,8 +37,9 @@ export const viewport: Viewport = { themeColor: "#F8F6EE" };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${playfair.variable} ${montserrat.variable} ${allura.variable} h-full antialiased`}>
+    <html lang="en" suppressHydrationWarning className={`${playfair.variable} ${montserrat.variable} ${allura.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
+        <BrandIntro />
         <noscript>
           <style>{`[data-reveal]{opacity:1!important;transform:none!important}`}</style>
         </noscript>

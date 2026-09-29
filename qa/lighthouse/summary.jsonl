@@ -1,5 +1,5 @@
-{"page":"/","performance":93,"accessibility":100,"bestPractices":100,"seo":100,"lcp":"3.1 s","cls":"0","tbt":"20 ms","bytes":"Total size was 405 KiB","allPerf":[92,93,94]}
-{"page":"/services","performance":97,"accessibility":100,"bestPractices":100,"seo":100,"lcp":"2.6 s","cls":"0","tbt":"20 ms","bytes":"Total size was 417 KiB","allPerf":[94,97,97]}
-{"page":"/portfolio","performance":91,"accessibility":100,"bestPractices":100,"seo":100,"lcp":"3.5 s","cls":"0","tbt":"20 ms","bytes":"Total size was 473 KiB","allPerf":[91,91,91]}
-{"page":"/portfolio/pink-sweet-16-garden-celebration","performance":90,"accessibility":100,"bestPractices":100,"seo":100,"lcp":"3.6 s","cls":"0","tbt":"30 ms","bytes":"Total size was 534 KiB","allPerf":[90,90,92]}
-{"page":"/contact","performance":99,"accessibility":100,"bestPractices":100,"seo":100,"lcp":"2.2 s","cls":"0","tbt":"20 ms","bytes":"Total size was 297 KiB","allPerf":[99,99,99]}
+{"page":"/","performance":93,"accessibility":100,"bestPractices":100,"seo":100,"lcp":"3.2 s","cls":"0.006","tbt":"20 ms","bytes":"Total size was 411 KiB","allPerf":[92,93,93]}
+{"page":"/services","performance":94,"accessibility":100,"bestPractices":100,"seo":100,"lcp":"2.9 s","cls":"0.006","tbt":"20 ms","bytes":"Total size was 422 KiB","allPerf":[94,94,96]}
+{"page":"/portfolio","performance":90,"accessibility":100,"bestPractices":100,"seo":100,"lcp":"3.5 s","cls":"0.006","tbt":"20 ms","bytes":"Total size was 477 KiB","allPerf":[90,90,90]}
+{"page":"/portfolio/pink-sweet-16-garden-celebration","performance":92,"accessibility":100,"bestPractices":100,"seo":100,"lcp":"3.3 s","cls":"0.006","tbt":"30 ms","bytes":"Total size was 537 KiB","allPerf":[90,92,92]}
+{"page":"/contact","performance":94,"accessibility":100,"bestPractices":100,"seo":100,"lcp":"2.9 s","cls":"0.006","tbt":"20 ms","bytes":"Total size was 301 KiB","allPerf":[94,94,95]}

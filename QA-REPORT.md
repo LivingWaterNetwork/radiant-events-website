@@ -10,7 +10,7 @@
 | 1 · Truth and content integrity | **Pass** | Claims audit and placeholder scan clean on all 18 rendered pages |
 | 2 · Functional | **Pass, with one blocked item** | Real end-to-end test inquiry blocked: no Resend key or inbox configured in Vercel |
 | 3 · Accessibility | **Pass** | axe: 0 violations of any severity on 17 routes × 2 widths |
-| 4 · Performance and media | **Partial** | Lighthouse 90–99 / 100 / 100 / 100. LCP over 2.5 s (simulated) on 4 of 5 pages. 8 source files not downloadable (videos, 3 JPGs) |
+| 4 · Performance and media | **Partial** | Lighthouse 90–94 / 100 / 100 / 100, above MMG's own site (82 / 96 / 100 / 92). LCP over 2.5 s (simulated) on all 5 pages. 8 source files not downloadable (videos, 3 JPGs) |
 | 5 · SEO and sharing | **Pass** | Rich Results Test not reachable from the build environment; JSON-LD validated by test |
 | 6 · Visual and responsive | **Partial** | Chromium only. Firefox and WebKit aren't installed in this environment; the Playwright projects are ready |
 | 7 · Code quality | **Pass** | tsc, eslint and `next build` clean. 30 unit tests and 142 e2e tests pass |
@@ -161,15 +161,19 @@ Raw output: `qa/axe-chromium.json`, `qa/axe-mobile-chromium.json`. One critical 
 
 | Page | Perf | A11y | Best Pr. | SEO | LCP | CLS | TBT | Perf (3 runs) |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `/` | **93** | 100 | 100 | 100 | 3.1 s | 0 | 20 ms | 92 / 93 / 94 |
-| `/services` | **97** | 100 | 100 | 100 | 2.6 s | 0 | 20 ms | 94 / 97 / 97 |
-| `/portfolio` | **91** | 100 | 100 | 100 | 3.5 s | 0 | 20 ms | 91 / 91 / 91 |
-| `/portfolio/pink-sweet-16-garden-celebration` | **90** | 100 | 100 | 100 | 3.6 s | 0 | 30 ms | 90 / 90 / 92 |
-| `/contact` | **99** | 100 | 100 | 100 | 2.2 s | 0 | 20 ms | 99 / 99 / 99 |
+| `/` | **93** | 100 | 100 | 100 | 3.2 s | 0.006 | 20 ms | 92 / 93 / 93 |
+| `/services` | **94** | 100 | 100 | 100 | 2.9 s | 0.006 | 20 ms | 94 / 94 / 96 |
+| `/portfolio` | **90** | 100 | 100 | 100 | 3.5 s | 0.006 | 20 ms | 90 / 90 / 90 |
+| `/portfolio/pink-sweet-16-garden-celebration` | **92** | 100 | 100 | 100 | 3.3 s | 0.006 | 30 ms | 90 / 92 / 92 |
+| `/contact` | **94** | 100 | 100 | 100 | 2.9 s | 0.006 | 20 ms | 94 / 94 / 95 |
 
-- **Pass:** Performance ≥ 90, Accessibility 100, Best Practices ≥ 95 and SEO 100 on all five pages. CLS is 0 everywhere, well under 0.05.
-- **Short of MMG's 95+ target:** on three pages (90–93).
-- **Fail: LCP ≤ 2.5 s** on 4 of 5 pages, at 2.6–3.6 s simulated. The observed (unthrottled) LCP is about 0.2 s.
+These figures include the MMG-style load-in (see "Load-in" below). The page headlines now wait for the entrance animation, as they do on MMG's site, which costs `/contact` about 0.7 s of simulated LCP (it was 99 and 2.2 s before the load-in).
+
+**For comparison, MMG's own home page, measured the same way from this environment:** Performance 82, Accessibility 96, Best Practices 100, SEO 92, LCP 4.0 s, CLS 0.
+
+- **Pass:** Performance ≥ 90, Accessibility 100, Best Practices ≥ 95 and SEO 100 on all five pages. CLS is 0.006 everywhere, well under 0.05.
+- **Short of MMG's 95+ target:** on all five pages (90–94) once the load-in is included.
+- **Fail: LCP ≤ 2.5 s** on all 5 pages, at 2.9–3.5 s simulated. The observed (unthrottled) LCP is about 0.2 s.
 - **Diagnosis:**
   - The LCP element is the hero or first project photo. It is discoverable in the HTML, eager, `fetchpriority=high`, and about 80 KB AVIF.
   - As an experiment, I replaced the home hero with a 29 KB file. Simulated LCP stayed at **3.1 s**, so image weight isn't the bottleneck.
@@ -214,6 +218,23 @@ The pipeline repeats this check with `exiftool-vendored` on every run: `exiftool
 | E03-01/02/03 | The panel shows only the team name ("Guest Experience Ministry"), no church | Kept. 4:5 instead of 3:2 (the portrait source would have cut the garlands) |
 | E04-02 | A partial guest at the left edge | **Cropped** (left 8%, including the OG crop) |
 | E04-01/03/04 | Not downloaded (over 10 MB) | Pending. E04-03 is marked in 05 as showing an identifiable adult, so it needs review at export |
+
+### Load-in (matches Measure & Make)
+
+Omar asked for the site's load-in to match MMG's (www.measureandmakegroup.com). MMG's intro was recorded frame by frame and its CSS read directly, and Radiant's copies it step for step:
+
+| Step | MMG | Radiant |
+| --- | --- | --- |
+| Trigger | An inline script sets `data-mm-brand="play"` once per session (sessionStorage), never under reduced motion | The same logic (`data-re-brand`, `re-brand` key) in `src/components/BrandIntro.tsx` |
+| Stage (0–1.2 s) | Forest field; the mark's two halves converge, corners fade in, centre scales up, gold rule draws, name letter-spacing settles from 0.7em to 0.42em | Olive-deep field; ivory and sage leaves converge, sand fine-line corners (the brand's frame language) fade in, centre dot scales, sand rule draws, "RADIANT EVENTS PLANNING" settles the same way |
+| Exit (1.12–1.85 s) | Stage lifts and shrinks, then a curtain wipes up (`clip-path`) | The same, with identical durations and easing curves |
+| Hero (from 1.45 s, or 60 ms on later pages) | Headline words rise out of masks 30 ms apart; other hero lines fade up in 55 ms steps | The same on the Home headline; every page intro uses the staggered fade-up |
+| Hover | Buttons draw a 2 px underline | Olive buttons draw a 2 px sand underline |
+
+- **Accessibility:** the overlay is `aria-hidden` and `pointer-events: none`, so it never blocks reading or clicking. It doesn't run under reduced motion or when printing. Without JavaScript nothing is hidden.
+- **Tests:** axe and the screenshots wait for all animations to finish before sampling.
+- **Evidence:** frame strips at 120 ms intervals ([1440](qa/screenshots/load-in/radiant-1440-frames.jpg), [390](qa/screenshots/load-in/radiant-390-frames.jpg)) and the [Radiant and MMG stages side by side](qa/screenshots/load-in/radiant-vs-mmg-stage.jpg).
+- **Brief change:** this overrides 07's "fades ≤ 250 ms" for the load-in only. Scroll reveals keep their 250 ms fade. **Flag for Rickya at review** (checklist item 10).
 
 **Fonts.** Playfair Display 500, Montserrat 400/500/600 and Allura 400, all loaded through `next/font` (self-hosted, `display: swap`). CLS is 0.
 
@@ -338,7 +359,7 @@ $ npm run test:e2e          → 142 passed, 4 skipped (device-specific: desktop-
 7. **She Rose photographer credit,** if wanted. Also confirm Radiant's exact scope wording for E04.
 8. **Travel radius and fee wording.** The FAQ currently says "Share your location and we'll confirm availability."
 9. **The final Privacy Policy and Terms before production.** The drafts are at `/privacy` and `/terms` (noindex, unlinked).
-10. **Overall look, photo order, and hero video versus still.** The still is live. The video is pending the source files.
+10. **Overall look, photo order, and hero video versus still.** The still is live. The video is pending the source files. This now includes the MMG-style brand load-in, which plays once per visit.
 
 **Also for the review:**
 - **Pending media.** The She Rose JPGs E04-01, E04-03 and E04-04, and the five videos, are waiting on the `SOURCE-MEDIA` folder being link-shared, or on the files being placed in `_source-media/`. After that, `npm run media` handles everything. The E05 tablescape project and its filter appear automatically once its video is processed.

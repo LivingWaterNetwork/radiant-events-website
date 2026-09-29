@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { SplitWords } from "@/components/BrandIntro";
 import HeroVideo from "@/components/HeroVideo";
 import Picture from "@/components/Picture";
 import { Container, InquiryBand, ProjectCard, Reveal, SectionHeading } from "@/components/sections";
@@ -30,10 +31,10 @@ export default function HomePage() {
       {/* 1. Hero */}
       <section aria-labelledby="hero-title" className="border-b border-sand">
         <div className="mx-auto grid max-w-[1600px] lg:min-h-[calc(100svh-4.5rem)] lg:grid-cols-[1fr_1.1fr]">
-          <div className="order-2 flex flex-col justify-center px-5 py-12 md:px-8 lg:order-1 lg:py-16 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] lg:pr-12">
+          <div data-re-hero className="order-2 flex flex-col justify-center px-5 py-12 md:px-8 lg:order-1 lg:py-16 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] lg:pr-12">
             <p className="eyebrow mb-5">{c.hero.eyebrow}</p>
-            <h1 id="hero-title" className="h-display text-[2.6rem] sm:text-5xl xl:text-7xl">
-              {c.hero.title}
+            <h1 id="hero-title" data-re-split className="h-display text-[2.6rem] sm:text-5xl xl:text-7xl">
+              <SplitWords text={c.hero.title} />
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink">{c.hero.support}</p>
             <p className="tagline mt-6">{site.tagline}</p>

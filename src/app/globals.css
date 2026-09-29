@@ -141,3 +141,199 @@ body {
     }
   }
 }
+
+/* ------------------------------------------------------------------------
+   Load-in (matches the Measure & Make timeline and easing).
+   Brand stage 0–1.2 s, curtain wipe 1.2–1.82 s, hero entrance after.
+   ------------------------------------------------------------------------ */
+:root {
+  --re-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --re-brand-ease: cubic-bezier(0.2, 0.7, 0.1, 1);
+  --re-brand-ease-in-out: cubic-bezier(0.7, 0, 0.2, 1);
+  --re-hero-delay: 60ms;
+  --re-hero-step: 55ms;
+  --re-hero-dur: 420ms;
+}
+@media (max-width: 640px) {
+  :root {
+    --re-hero-step: 45ms;
+    --re-hero-dur: 360ms;
+  }
+}
+
+.re-brand {
+  display: none;
+}
+:root[data-re-brand="play"] {
+  --re-hero-delay: 1450ms;
+}
+:root[data-re-brand="play"] .re-brand {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--olive-deep);
+  pointer-events: none;
+  animation:
+    re-brand-curtain 0.62s var(--re-brand-ease-in-out) 1.2s both,
+    re-brand-end 0s linear 1.85s forwards;
+}
+.re-brand__sheen {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(60% 50% at 50% 50%, rgb(227 214 198 / 0.12), transparent 70%);
+  animation: re-brand-fade 1.2s var(--re-brand-ease) 0.2s both;
+}
+.re-brand__stage {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 26px;
+  animation: re-brand-stage-out 0.5s var(--re-brand-ease-in-out) 1.12s both;
+}
+.re-brand__mark {
+  width: clamp(92px, 16vw, 140px);
+  height: auto;
+  overflow: visible;
+}
+.re-brand__upper {
+  animation: re-brand-upper 0.9s var(--re-brand-ease) 80ms both;
+}
+.re-brand__lower {
+  animation: re-brand-lower 0.9s var(--re-brand-ease) 0.16s both;
+}
+.re-brand__corners {
+  animation: re-brand-fade 0.7s var(--re-brand-ease) 0.24s both;
+}
+.re-brand__center {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: re-brand-center 0.6s var(--re-brand-ease) 0.52s both;
+}
+.re-brand__rule {
+  width: clamp(120px, 18vw, 180px);
+  height: 1px;
+  background: var(--sand);
+  transform-origin: center;
+  animation: re-brand-rule 0.6s var(--re-brand-ease) 0.62s both;
+}
+.re-brand__name {
+  margin-right: -0.42em;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--ivory);
+  animation: re-brand-name 0.7s var(--re-brand-ease) 0.7s both;
+}
+@keyframes re-brand-upper {
+  from { opacity: 0; transform: translate(18px, -18px); }
+}
+@keyframes re-brand-lower {
+  from { opacity: 0; transform: translate(-18px, 18px); }
+}
+@keyframes re-brand-center {
+  from { opacity: 0; transform: scale(0); }
+}
+@keyframes re-brand-rule {
+  from { transform: scaleX(0); }
+}
+@keyframes re-brand-name {
+  from { opacity: 0; letter-spacing: 0.7em; }
+}
+@keyframes re-brand-fade {
+  from { opacity: 0; }
+}
+@keyframes re-brand-stage-out {
+  to { opacity: 0; transform: translateY(-18px) scale(0.97); }
+}
+@keyframes re-brand-curtain {
+  from { clip-path: inset(0); }
+  to { clip-path: inset(0 0 100% 0); }
+}
+@keyframes re-brand-end {
+  to { visibility: hidden; }
+}
+
+/* Hero entrance: each direct child of [data-re-hero] rises in turn. */
+:root[data-re-intro="play"] [data-re-hero] > * {
+  animation: re-hero-in var(--re-hero-dur) var(--re-ease) both;
+  animation-delay: calc(var(--re-hero-delay) + var(--re-hero-step) * var(--re-hero-index, 0));
+}
+:root[data-re-intro="play"] [data-re-hero] > :nth-child(2) { --re-hero-index: 1; }
+:root[data-re-intro="play"] [data-re-hero] > :nth-child(3) { --re-hero-index: 2; }
+:root[data-re-intro="play"] [data-re-hero] > :nth-child(4) { --re-hero-index: 3; }
+:root[data-re-intro="play"] [data-re-hero] > :nth-child(5) { --re-hero-index: 4; }
+:root[data-re-intro="play"] [data-re-hero] > :nth-child(n + 6) { --re-hero-index: 5; }
+@keyframes re-hero-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Split headline: words rise out of masks. The heading itself doesn't fade. */
+.re-split__mask,
+.re-split__word {
+  display: inline-block;
+}
+.re-split__mask {
+  overflow: hidden;
+  vertical-align: top;
+  padding: 0.12em 0 0.2em;
+  margin: -0.12em 0 -0.2em;
+}
+:root[data-re-intro="play"] [data-re-hero] > [data-re-split] {
+  animation: none;
+}
+:root[data-re-intro="play"] [data-re-split] .re-split__word {
+  animation: re-split-in 0.72s var(--re-ease) both;
+  animation-delay: calc(var(--re-hero-delay) + 30ms * var(--re-word, 0));
+}
+@keyframes re-split-in {
+  from { transform: translateY(110%); }
+  to { transform: none; }
+}
+
+/* Hover: a drawn underline, as on MMG's buttons and links. */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 2px;
+  background: var(--sand);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.32s var(--re-ease);
+}
+.btn-primary:hover::after,
+.btn-primary:focus-visible::after {
+  transform: scaleX(1);
+}
+@media (hover: none) {
+  .btn-primary::after {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .re-brand {
+    display: none !important;
+  }
+  :root[data-re-intro="play"] [data-re-hero] > *,
+  :root[data-re-intro="play"] [data-re-split] .re-split__word {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}
+@media print {
+  .re-brand {
+    display: none !important;
+  }
+}

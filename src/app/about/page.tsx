@@ -18,7 +18,7 @@ export default function AboutPage() {
     <>
       {/* Hero: the tagline section */}
       <section aria-labelledby="about-title" className="border-b border-sand">
-        <Container className="py-16 md:py-24">
+        <Container className="py-16 md:py-24" data-re-hero>
           <p className="eyebrow">{c.title}</p>
           <h1 id="about-title" className="tagline mt-4 text-5xl md:text-7xl">
             {site.tagline}

@@ -22,6 +22,8 @@ for (const route of routes) {
         await new Promise((r) => setTimeout(r, 120));
       }
     });
+    // Let the load-in (brand curtain, hero entrance) and reveals finish before scanning.
+    await page.waitForFunction(() => document.getAnimations().every((a) => a.playState !== "running"));
     await page.waitForTimeout(400);
     const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
     const serious = results.violations.filter((v) => v.impact === "serious" || v.impact === "critical");

@@ -31,7 +31,7 @@ export default async function ArticlePage({ params }: PageProps<"/helpful-reads/
 
   return (
     <article>
-      <Container className="max-w-3xl pb-10 pt-12 md:pt-16">
+      <Container className="max-w-3xl pb-10 pt-12 md:pt-16" data-re-hero>
         <Link href="/helpful-reads" className="btn-link">
           <span aria-hidden="true">←&nbsp;</span>
           {c.back}

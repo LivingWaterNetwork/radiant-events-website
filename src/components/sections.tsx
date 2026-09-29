@@ -5,14 +5,22 @@ import { site } from "@/content/site";
 import Picture from "./Picture";
 import { Reveal } from "./motion/Reveal";
 
-export function Container({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <div className={`mx-auto max-w-7xl px-5 md:px-8 ${className}`}>{children}</div>;
+export function Container({
+  children,
+  className = "",
+  ...rest
+}: { children: ReactNode; className?: string } & React.HTMLAttributes<HTMLDivElement> & { "data-re-hero"?: boolean }) {
+  return (
+    <div {...rest} className={`mx-auto max-w-7xl px-5 md:px-8 ${className}`}>
+      {children}
+    </div>
+  );
 }
 
 export function PageIntro({ eyebrow, title, body, children }: { eyebrow?: string; title: string; body?: string; children?: ReactNode }) {
   return (
     <Container className="pb-12 pt-14 md:pb-16 md:pt-20">
-      <div className="max-w-3xl">
+      <div data-re-hero className="max-w-3xl">
         {eyebrow && <p className="eyebrow mb-4">{eyebrow}</p>}
         <h1 className="h-display text-4xl md:text-6xl">{title}</h1>
         {body && <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink">{body}</p>}

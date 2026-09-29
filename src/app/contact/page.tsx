@@ -10,7 +10,7 @@ export const metadata: Metadata = pageMetadata(seo.contact);
 export default function ContactPage() {
   return (
     <Container className="grid gap-12 py-14 md:py-20 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
-      <div>
+      <div data-re-hero>
         <h1 className="h-display text-4xl md:text-6xl">{inquiryCopy.title}</h1>
         <p className="mt-6 max-w-md text-lg leading-relaxed text-ink">{inquiryCopy.intro}</p>
       </div>

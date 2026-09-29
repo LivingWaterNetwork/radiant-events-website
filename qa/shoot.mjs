@@ -10,6 +10,7 @@ for (const w of widths.split(",").map(Number)) {
       for (let y = 0; y < document.body.scrollHeight; y += 400) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 180)); }
       window.scrollTo(0, 0);
     });
+    await page.waitForFunction(() => document.getAnimations().every((a) => a.playState !== "running"));
     await page.waitForTimeout(700);
     const name = (r === "/" ? "home" : r.slice(1).replace(/\//g, "_")) + `-${w}.jpg`;
     await page.screenshot({ path: `${out}/${name}`, fullPage: true, type: "jpeg", quality: 60 });
