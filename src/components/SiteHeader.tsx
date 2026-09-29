@@ -58,7 +58,7 @@ export default function SiteHeader() {
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-3 md:px-8">
         <Wordmark onClick={() => setOpen(false)} />
 
-        <nav aria-label="Primary" className="hidden items-center gap-7 lg:flex">
+        <nav aria-label={site.navLabels.primary} className="hidden items-center gap-7 lg:flex">
           {site.nav.map((link) => (
             <Link
               key={link.href}
@@ -95,7 +95,7 @@ export default function SiteHeader() {
           ref={panelRef}
           role="dialog"
           aria-modal="true"
-          aria-label="Menu"
+          aria-label={site.menuLabels.dialog}
           className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-ivory lg:hidden"
         >
           <div className="flex items-center justify-between px-5 py-3">
@@ -111,7 +111,7 @@ export default function SiteHeader() {
               </svg>
             </button>
           </div>
-          <nav aria-label="Mobile" className="flex flex-1 flex-col justify-center gap-2 px-8 pb-16">
+          <nav aria-label={site.navLabels.mobile} className="flex flex-1 flex-col justify-center gap-2 px-8 pb-16">
             {site.nav.map((link) => (
               <Link
                 key={link.href}

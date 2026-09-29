@@ -8,7 +8,8 @@ import { isProductionDeploy } from "@/lib/env";
 
 const playfair = Playfair_Display({ variable: "--font-playfair", subsets: ["latin"], weight: ["500"], display: "swap" });
 const montserrat = Montserrat({ variable: "--font-montserrat", subsets: ["latin"], weight: ["400", "500", "600"], display: "swap" });
-const allura = Allura({ variable: "--font-allura", subsets: ["latin"], weight: "400", display: "swap" });
+// Tagline only: not worth a preload competing with the hero image.
+const allura = Allura({ variable: "--font-allura", subsets: ["latin"], weight: "400", display: "swap", preload: false });
 
 const ogImage = { url: "/images/portfolio/e01/E01-01-og-1200.jpg", width: 1200, height: 630, alt: "Pink balloon arch and ribbon fringe backdrop with light-up 16 numbers on a sunny patio" };
 

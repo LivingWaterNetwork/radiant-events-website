@@ -1,5 +1,5 @@
 // Inquiry form copy and options. Source: 03 Contact / Inquiry.
-// Budget is [Open]: free text for now; switch `budget.mode` to "select" and
+// Budget is an open item: free text for now; switch `budget.mode` to "select" and
 // supply `options` once Rickya provides ranges. No values are hard-coded.
 
 export type BudgetFieldConfig =

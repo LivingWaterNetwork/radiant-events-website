@@ -19,6 +19,7 @@ export default function PortfolioPage() {
           filters={getPortfolioFilters()}
           allLabel={portfolioCopy.allFilter}
           filterLabel={portfolioCopy.filterLabel}
+          countLabel={portfolioCopy.countLabel}
         />
       </Container>
       <InquiryBand title={homeCopy.inquiryBand.title} />

@@ -11,6 +11,14 @@ type Status = "idle" | "sent" | "unavailable" | "error" | "rate_limited";
 const inputBase =
   "mt-2 block min-h-11 w-full border bg-white px-4 py-3 text-base text-ink focus:border-olive-deep focus:outline-2 focus:outline-offset-0 focus:outline-olive-deep";
 
+function Label({ htmlFor, text, required }: { htmlFor: string; text: string; required?: boolean }) {
+  return (
+    <label htmlFor={htmlFor} className="block text-sm font-medium text-ink">
+      {text} <span className="font-normal text-olive-deep">({required ? c.requiredMark : c.optionalMark})</span>
+    </label>
+  );
+}
+
 export default function InquiryForm() {
   const [status, setStatus] = useState<Status>("idle");
   const statusRef = useRef<HTMLDivElement>(null);
@@ -77,17 +85,12 @@ export default function InquiryForm() {
       </p>
     ) : null;
 
-  const Label = ({ htmlFor, text, required }: { htmlFor: string; text: string; required?: boolean }) => (
-    <label htmlFor={htmlFor} className="block text-sm font-medium text-ink">
-      {text} <span className="font-normal text-olive-deep">({required ? c.requiredMark : c.optionalMark})</span>
-    </label>
-  );
 
   const border = (name: keyof InquiryInput) => (errors[name] ? "border-[#8a2c1f]" : "border-taupe");
   const b = c.budget;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit, onInvalid)} noValidate className="grid gap-7" aria-describedby="required-note">
+    <form onSubmit={(e) => handleSubmit(onSubmit, onInvalid)(e)} noValidate className="grid gap-7" aria-describedby="required-note">
       <p id="required-note" className="text-sm text-ink">
         {c.requiredNote}
       </p>
@@ -173,7 +176,7 @@ export default function InquiryForm() {
         </div>
       </div>
 
-      <fieldset aria-describedby={errors.services ? "services-error" : undefined} aria-required="true">
+      <fieldset aria-describedby={errors.services ? "services-error" : undefined}>
         <legend className="text-sm font-medium text-ink">
           {c.labels.services} <span className="font-normal text-olive-deep">({c.requiredMark})</span>
         </legend>

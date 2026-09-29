@@ -1,33 +1,37 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import type { ResolvedProject } from "@/content/portfolio";
 import { filterSlug } from "@/lib/slug";
 import { ProjectCard } from "./sections";
+
+function subscribeHash(onChange: () => void) {
+  window.addEventListener("hashchange", onChange);
+  return () => window.removeEventListener("hashchange", onChange);
+}
 
 export default function PortfolioGrid({
   projects,
   filters,
   allLabel,
   filterLabel,
+  countLabel,
 }: {
   projects: ResolvedProject[];
   filters: string[];
   allLabel: string;
   filterLabel: string;
+  countLabel: { one: string; other: string };
 }) {
-  const [active, setActive] = useState(allLabel);
-
-  // Deep link: /portfolio#birthdays-and-milestones
-  useEffect(() => {
-    const fromHash = filters.find((f) => filterSlug(f) === window.location.hash.slice(1));
-    if (fromHash) setActive(fromHash);
-  }, [filters]);
+  // The active filter lives in the URL hash (/portfolio#birthdays-and-milestones),
+  // so it deep-links and survives reloads.
+  const hash = useSyncExternalStore(subscribeHash, () => window.location.hash.slice(1), () => "");
+  const active = filters.find((f) => filterSlug(f) === hash) ?? allLabel;
 
   function choose(f: string) {
-    setActive(f);
-    const hash = f === allLabel ? "" : `#${filterSlug(f)}`;
-    window.history.replaceState(null, "", `${window.location.pathname}${hash}`);
+    const next = f === allLabel ? "" : `#${filterSlug(f)}`;
+    window.history.replaceState(null, "", `${window.location.pathname}${next}`);
+    window.dispatchEvent(new Event("hashchange"));
   }
 
   const visible = active === allLabel ? projects : projects.filter((p) => p.eventType === active);
@@ -50,7 +54,7 @@ export default function PortfolioGrid({
         </div>
       )}
       <p className="sr-only" aria-live="polite">
-        {visible.length} {visible.length === 1 ? "project" : "projects"}
+        {visible.length} {visible.length === 1 ? countLabel.one : countLabel.other}
       </p>
       <ul className="mt-10 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
         {visible.map((p, i) => (

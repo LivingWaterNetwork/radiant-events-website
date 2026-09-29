@@ -157,7 +157,9 @@ export default function HomePage() {
                 <span className="h-display block text-3xl text-olive-deep" aria-hidden="true">
                   {i + 1}
                 </span>
-                <span className="sr-only">Step {i + 1}: </span>
+                <span className="sr-only">
+                  {site.stepLabel} {i + 1}:{" "}
+                </span>
                 <span className="mt-3 block text-base leading-snug text-ink">{step}</span>
               </Reveal>
             ))}

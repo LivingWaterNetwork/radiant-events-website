@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { LazyMotion, domAnimation, m, useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
 
 // Restrained motion (07): a short fade-and-rise, ≤ 250 ms, off under reduced motion.
@@ -18,12 +18,13 @@ export function Reveal({
   as?: "div" | "li" | "section";
 }) {
   const reduce = useReducedMotion();
-  const Component = motion[as];
+  const Component = m[as];
   if (reduce) {
     const Static = as;
     return <Static className={className}>{children}</Static>;
   }
   return (
+    <LazyMotion features={domAnimation} strict>
     <Component
       data-reveal=""
       className={className}
@@ -34,5 +35,6 @@ export function Reveal({
     >
       {children}
     </Component>
+    </LazyMotion>
   );
 }

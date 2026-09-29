@@ -1,4 +1,4 @@
-// About copy. Source: 03 About. Founder story, portrait and quote are [Coming]:
+// About copy. Source: 03 About. Founder story, portrait and quote are still coming from Rickya:
 // leave them undefined and the page renders nothing for them.
 
 export type FounderContent = {

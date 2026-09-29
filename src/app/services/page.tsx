@@ -16,7 +16,7 @@ export default function ServicesPage() {
     <>
       <PageIntro eyebrow={site.nav[0].label} title={c.intro.title} body={c.intro.body} />
 
-      <nav aria-label="Services on this page" className="border-y border-sand bg-white">
+      <nav aria-label={site.navLabels.servicesOnPage} className="border-y border-sand bg-white">
         <Container>
           <ul className="flex flex-wrap gap-x-8 gap-y-1 py-3">
             {getServices().map((s) => (

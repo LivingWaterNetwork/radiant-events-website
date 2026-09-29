@@ -21,17 +21,18 @@ export default function Gallery({ images, labels }: { images: ImageAsset[]; labe
   const touchX = useRef<number | null>(null);
   const n = images.length;
 
-  const close = useCallback(() => {
-    setIndex((i) => {
-      if (i !== null) requestAnimationFrame(() => triggerRefs.current[i]?.focus());
-      return null;
-    });
-  }, []);
+  const openerRef = useRef<number | null>(null);
+  const open = (i: number) => {
+    openerRef.current = i;
+    setIndex(i);
+  };
+  const close = useCallback(() => setIndex(null), []);
   const step = useCallback((d: number) => setIndex((i) => (i === null ? i : (i + d + n) % n)), [n]);
 
   useEffect(() => {
     if (index === null) return;
     const dialog = dialogRef.current;
+    const triggers = triggerRefs.current;
     dialog?.querySelector<HTMLElement>("[data-autofocus]")?.focus();
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -62,6 +63,9 @@ export default function Gallery({ images, labels }: { images: ImageAsset[]; labe
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevOverflow;
+      // Return focus to the thumbnail that opened the dialog.
+      const opener = openerRef.current;
+      if (opener !== null) triggers[opener]?.focus();
     };
     // Only re-run when the dialog opens/closes, not on every slide change.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -79,7 +83,7 @@ export default function Gallery({ images, labels }: { images: ImageAsset[]; labe
                 triggerRefs.current[i] = el;
               }}
               type="button"
-              onClick={() => setIndex(i)}
+              onClick={() => open(i)}
               className="zoom-media block h-full w-full overflow-hidden bg-sand"
               aria-label={`${labels.open}: ${img.alt}`}
             >

@@ -129,6 +129,7 @@ export const portfolioCopy = {
   },
   allFilter: "All",
   filterLabel: "Filter projects by event type",
+  countLabel: { one: "project", other: "projects" },
   whatWeDid: "What we did",
   gallery: "Gallery",
   video: "On site",
@@ -142,7 +143,6 @@ export const portfolioCopy = {
     next: "Next image",
     counter: "Image {i} of {n}",
   },
-  location: "Location",
   back: "All projects",
 };
 

@@ -31,7 +31,7 @@ export default function SiteFooter() {
             </ul>
           )}
         </div>
-        <nav aria-label="Footer">
+        <nav aria-label={site.navLabels.footer}>
           <ul className="grid gap-x-8 sm:grid-cols-2">
             {[...site.nav, site.inquiryCta].map((l) => (
               <li key={l.href}>

@@ -47,14 +47,16 @@ export const site = {
     copyright: "© 2026 Radiant Events Planning",
   },
 
-  // [Open] — render only once real values exist. Leave undefined until supplied.
+  // Open items: render only once real values exist. Leave undefined until supplied.
   social: {} as SocialLinks,
   contact: {} as PublicContact,
   // Privacy and Terms are noindex drafts and stay out of nav/footer until approved.
   legal: {} as LegalLinks,
 
   skipLink: "Skip to content",
-  menuLabels: { open: "Open menu", close: "Close menu" },
+  menuLabels: { open: "Open menu", close: "Close menu", dialog: "Menu" },
+  navLabels: { primary: "Primary", mobile: "Mobile", footer: "Footer", servicesOnPage: "Services on this page" },
+  stepLabel: "Step",
 } as const;
 
 export type PageSeo = { title: string; description: string; path: string };
