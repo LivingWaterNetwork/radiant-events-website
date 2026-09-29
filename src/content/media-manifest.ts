@@ -233,7 +233,17 @@ export const imageAssets: Record<string, ImageAsset> = {
       2400
     ],
     "cropNotes": "4:5 crop from 3024x4032 at [0,121,3024x3780]; blurred 1 region(s). 4:5. Honoree's name on the welcome sign was legible and is blurred.",
-    "variants": {}
+    "variants": {
+      "og": {
+        "base": "/images/portfolio/e02/E02-01-og",
+        "widths": [
+          1200
+        ],
+        "width": 1200,
+        "height": 630,
+        "jpgOnly": true
+      }
+    }
   },
   "E02-02": {
     "id": "E02-02",
@@ -269,7 +279,17 @@ export const imageAssets: Record<string, ImageAsset> = {
       2400
     ],
     "cropNotes": "4:5 crop from 3024x4032 at [0,252,3024x3780]. Manifest asked for 3:2; the source is 3:4 portrait and a 3:2 crop would cut the garlands, so 4:5 with the ceiling trimmed. Panel text is the ministry team name only; no church named.",
-    "variants": {}
+    "variants": {
+      "og": {
+        "base": "/images/portfolio/e03/E03-01-og",
+        "widths": [
+          1200
+        ],
+        "width": 1200,
+        "height": 630,
+        "jpgOnly": true
+      }
+    }
   },
   "E03-02": {
     "id": "E03-02",
@@ -323,7 +343,17 @@ export const imageAssets: Record<string, ImageAsset> = {
       2400
     ],
     "cropNotes": "4:3 crop from 4032x3024 at [323,121,3709x2782]. 4:3. Left edge trimmed to remove a partial guest at the frame edge.",
-    "variants": {}
+    "variants": {
+      "og": {
+        "base": "/images/portfolio/e04/E04-02-og",
+        "widths": [
+          1200
+        ],
+        "width": 1200,
+        "height": 630,
+        "jpgOnly": true
+      }
+    }
   }
 };
 

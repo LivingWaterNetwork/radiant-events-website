@@ -114,6 +114,7 @@ const ASSETS = [
     alt: "Game-night balloon column with playing cards and oversized dice beside a welcome sign",
     crop: { aspect: [4, 5], left: 0, top: 0.03, width: 1 },
     blur: [{ x: 1680, y: 1826, w: 380, h: 80 }],
+    variants: { og: { aspect: [1200, 630], left: 0, top: 0.3, width: 1, widths: [1200], jpgOnly: true } },
     notes: "4:5. Honoree's name on the welcome sign was legible and is blurred.",
   },
   {
@@ -129,6 +130,7 @@ const ASSETS = [
     driveId: "1TQxWKoKZU3yWkyLYukn-fcOl7WkCUCTU", copyId: "1ryvRy4i-XTRMRaWwTRMy0lkAk0zD6te4",
     alt: "Teal and lime balloon garlands framing a purple shimmer-wall backdrop",
     crop: { aspect: [4, 5], left: 0, top: 0.0625, width: 1 },
+    variants: { og: { aspect: [1200, 630], left: 0, top: 0.33, width: 1, widths: [1200], jpgOnly: true } },
     notes: "Manifest asked for 3:2; the source is 3:4 portrait and a 3:2 crop would cut the garlands, so 4:5 with the ceiling trimmed. Panel text is the ministry team name only; no church named.",
   },
   {
@@ -157,6 +159,7 @@ const ASSETS = [
     driveId: "1hGzpLx4NnRPo2x_3ocNYL8-z_DEUixHG", copyId: "1u4UX5et-3sBJazaZaRiw1fofNArPOfiY",
     alt: "Rose flower wall framing pink sequin panels",
     crop: { aspect: [4, 3], left: 0.08, top: 0.04, width: 0.92 },
+    variants: { og: { aspect: [1200, 630], left: 0.08, top: 0.15, width: 0.92, widths: [1200], jpgOnly: true } },
     notes: "4:3. Left edge trimmed to remove a partial guest at the frame edge.",
   },
   {
