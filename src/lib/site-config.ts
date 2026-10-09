@@ -7,11 +7,12 @@ export const siteConfig = {
     "Intentional event planning and elevated design for celebrations that feel personal, polished, and effortless.",
   url: "https://radianteventsplanning.com",
 
-  // No verified contact details were supplied with the brand package.
-  // Fill these in and flip hasContactInfo to true once real values exist.
-  hasContactInfo: false,
+  // Google Workspace is active; info shares the bookings inbox.
+  hasContactInfo: true,
   contact: {
-    email: null as string | null,
+    email: "info@radianteventsplanning.com" as string | null,
+    bookingsEmail: "bookings@radianteventsplanning.com",
+    inquiryFormUrl: "https://docs.google.com/forms/d/e/1FAIpQLSe_f6gsG0OBLF2cPn2xZ44UcKwrtEQ60oePfq1pXn4Xz71fFA/viewform",
     phone: null as string | null,
     address: null as string | null,
   },
