@@ -5,6 +5,7 @@ import BrandEntrance from "@/components/BrandEntrance";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { siteConfig } from "@/lib/site-config";
+import { shareImage } from "@/lib/seo";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -36,14 +37,13 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     locale: "en_US",
     type: "website",
-    images: [
-      {
-        url: "/images/pink-arch.webp",
-        width: 1200,
-        height: 1600,
-        alt: "Radiant Events pink balloon installation",
-      },
-    ],
+    images: [shareImage],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${siteConfig.name} | Atlanta Event Planning & Design`,
+    description: siteConfig.oneLiner,
+    images: [shareImage],
   },
 };
 
