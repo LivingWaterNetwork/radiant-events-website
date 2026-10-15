@@ -1,13 +1,14 @@
 import Link from "next/link";
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import PageHero from "@/components/sections/PageHero";
 import { Reveal } from "@/components/motion/Reveal";
 import { siteConfig } from "@/lib/site-config";
 
-export const metadata: Metadata = {
-  title: "Process",
-  description: "A calm, considered client journey from first inquiry to final celebration.",
-};
+export const metadata = pageMetadata(
+  "Process",
+  "A calm, considered client journey from first inquiry to final celebration.",
+  "/process",
+);
 
 const STEPS = [
   {
@@ -27,13 +28,13 @@ const STEPS = [
   },
   {
     number: "04",
-    title: "Planning + Design",
-    copy: "We translate the concept into a plan: palette, layout, vendors, and the specific details that will carry your day.",
+    title: "Booking + Planning",
+    copy: "Once the scope and booking terms are agreed, we translate the concept into your plan: design direction, responsibilities, venue needs, and the details that will carry your day.",
   },
   {
     number: "05",
     title: "Production + Installation",
-    copy: "Vendors are booked, timelines built, and every logistical thread held so nothing is left to chance.",
+    copy: "The agreed vendor, setup, and coordination arrangements are confirmed against your venue access and event timeline.",
   },
   {
     number: "06",
@@ -60,10 +61,16 @@ export default function ProcessPage() {
               delay={Math.min(i * 0.05, 0.2)}
               className="grid md:grid-cols-[auto_1fr] gap-6 md:gap-10 items-start"
             >
-              <span className="font-display text-6xl text-blush leading-none">{step.number}</span>
+              <span className="font-display text-6xl text-blush leading-none">
+                {step.number}
+              </span>
               <div>
-                <h2 className="font-display text-3xl text-aubergine mb-3">{step.title}</h2>
-                <p className="font-sans text-stone leading-relaxed max-w-xl">{step.copy}</p>
+                <h2 className="font-display text-3xl text-aubergine mb-3">
+                  {step.title}
+                </h2>
+                <p className="font-sans text-stone leading-relaxed max-w-xl">
+                  {step.copy}
+                </p>
               </div>
             </Reveal>
           ))}
@@ -75,7 +82,7 @@ export default function ProcessPage() {
           <h2 className="font-display text-4xl mb-6">Ready to begin?</h2>
           <Link
             href="/contact"
-            className="inline-block rounded-full bg-tangerine px-8 py-4 font-sans uppercase tracking-wide-lg text-sm text-ink hover:bg-coral transition-colors"
+            className="inline-block rounded-full bg-tangerine px-8 py-4 font-sans uppercase tracking-wide-lg text-sm text-cream-light hover:bg-coral transition-colors"
           >
             {siteConfig.primaryCta}
           </Link>

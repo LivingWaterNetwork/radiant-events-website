@@ -1,43 +1,36 @@
-const GRADIENTS = [
-  "from-aubergine via-ink-deep to-ink",
-  "from-tangerine via-coral to-blush",
-  "from-blush via-cream to-taupe",
-  "from-ink via-aubergine to-coral",
+import Image from "next/image";
+const media = [
+  {
+    src: "/images/pink-arch.webp",
+    alt: "Pink balloon installation around a gold circular frame",
+  },
+  {
+    src: "/images/colorful-backdrop.webp",
+    alt: "Turquoise and lime balloons framing a purple sequin backdrop",
+  },
+  {
+    src: "/images/game-night.webp",
+    alt: "Game-inspired focal moment with balloons and oversized dice",
+  },
 ];
-
-export default function PlaceholderMedia({
+export default function EventMedia({
   index = 0,
-  label,
   className = "",
 }: {
   index?: number;
-  label?: string;
   className?: string;
+  label?: string;
 }) {
-  const gradient = GRADIENTS[index % GRADIENTS.length];
+  const item = media[index % media.length];
   return (
-    <div
-      className={`relative overflow-hidden bg-gradient-to-br ${gradient} ${className}`}
-      aria-label={label ?? "Placeholder image — replace with event photography"}
-    >
-      <svg
-        className="absolute inset-0 h-full w-full opacity-20"
-        viewBox="0 0 200 200"
-        preserveAspectRatio="xMidYMid slice"
-      >
-        <path
-          d="M20 100 Q 60 20, 100 100 T 180 100"
-          fill="none"
-          stroke="white"
-          strokeWidth="1"
-        />
-        <circle cx="100" cy="100" r="60" fill="none" stroke="white" strokeWidth="0.5" />
-      </svg>
-      {label && (
-        <span className="absolute bottom-3 left-3 rounded-full bg-ink/50 px-3 py-1 text-[10px] uppercase tracking-wide-lg text-cream-light font-sans">
-          {label}
-        </span>
-      )}
+    <div className={"relative overflow-hidden " + className}>
+      <Image
+        src={item.src}
+        alt={item.alt}
+        fill
+        sizes="(max-width:768px) 100vw, 50vw"
+        className="object-cover"
+      />
     </div>
   );
 }

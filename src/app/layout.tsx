@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Montserrat } from "next/font/google";
+import { Allura, Cormorant_Garamond, Montserrat } from "next/font/google";
 import "./globals.css";
+import BrandEntrance from "@/components/BrandEntrance";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { siteConfig } from "@/lib/site-config";
@@ -8,14 +9,17 @@ import { siteConfig } from "@/lib/site-config";
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
 });
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+});
+const allura = Allura({
+  variable: "--font-allura",
+  subsets: ["latin"],
+  weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -32,6 +36,14 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/images/pink-arch.webp",
+        width: 1200,
+        height: 1600,
+        alt: "Radiant Events pink balloon installation",
+      },
+    ],
   },
 };
 
@@ -39,8 +51,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${montserrat.variable} h-full antialiased`}
+      className={`${cormorant.variable} ${montserrat.variable} ${allura.variable} h-full antialiased`}
     >
+      <head>
+        <link rel="preload" as="image" href="/brand/radiant-olive-logo.webp" />
+      </head>
       <body className="min-h-full flex flex-col bg-cream-light text-ink">
         <a
           href="#main-content"
@@ -48,6 +63,51 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Skip to content
         </a>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "Organization",
+                  "@id": siteConfig.url + "/#organization",
+                  name: "Radiant Events Planning",
+                  alternateName: "Radiant Events",
+                  url: siteConfig.url,
+                  logo: siteConfig.url + "/brand/radiant-olive-logo.webp",
+                  email: siteConfig.contact.bookingsEmail,
+                  description: siteConfig.oneLiner,
+                  areaServed: {
+                    "@type": "City",
+                    name: "Atlanta",
+                    containedInPlace: { "@type": "State", name: "Georgia" },
+                  },
+                  sameAs: [siteConfig.social.instagram],
+                  founder: { "@id": siteConfig.url + "/#rickya" },
+                },
+                {
+                  "@type": "Person",
+                  "@id": siteConfig.url + "/#rickya",
+                  name: "Rickya Fandino",
+                  jobTitle: "Founder",
+                  url: siteConfig.url + "/about",
+                  image: siteConfig.url + "/images/rickya-fandino.webp",
+                  worksFor: { "@id": siteConfig.url + "/#organization" },
+                },
+                {
+                  "@type": "WebSite",
+                  "@id": siteConfig.url + "/#website",
+                  url: siteConfig.url,
+                  name: "Radiant Events Planning",
+                  publisher: { "@id": siteConfig.url + "/#organization" },
+                  inLanguage: "en-US",
+                },
+              ],
+            }).replace(/</g, "\\u003c"),
+          }}
+        />
+        <BrandEntrance />
         <SiteHeader />
         <main id="main-content" className="flex-1">
           {children}

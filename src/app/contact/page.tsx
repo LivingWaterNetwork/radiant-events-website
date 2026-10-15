@@ -1,40 +1,53 @@
+import InquiryForm from "@/components/InquiryForm";
+import ArrowIcon from "@/components/ArrowIcon";
 import PageHero from "@/components/sections/PageHero";
 import { siteConfig } from "@/lib/site-config";
-
-export default function ContactPage() {
+export default function Contact() {
   return (
     <div>
       <PageHero
-        eyebrow="Contact"
-        title="Begin a Consultation"
-        subtitle="Tell us a little about your celebration and we'll be in touch within two business days."
-        mediaIndex={1}
+        eyebrow="Let's create together"
+        title="Your celebration starts here."
+        subtitle="A few details are all we need to begin. Share your occasion, your date, and what you're imagining."
       />
-      <section className="mx-auto max-w-3xl px-6 py-16">
-        <p className="mb-6 text-center font-sans text-sm text-stone">
-          Complete the inquiry below, or email us at{" "}
-          <a className="text-aubergine underline" href={"mailto:" + siteConfig.contact.bookingsEmail}>
+      <section className="section-wrap contact-layout">
+        <aside>
+          <p className="eyebrow">A thoughtful first step</p>
+          <h2>
+            Bring the idea.
+            <br />
+            <em>We&apos;ll help with the details.</em>
+          </h2>
+          <p>
+            Your date, location, inspiration, and comfortable budget help us
+            recommend the right design and support.
+          </p>
+          <p>
+            An inquiry begins the conversation. Availability, scope, and booking
+            details are confirmed together.
+          </p>
+          <div className="inquiry-next">
+            <h3>What happens next?</h3>
+            <p>
+              We review your date, location, and priorities, then discuss
+              availability and the right scope. If it feels like a fit, your
+              custom proposal sets out the design, responsibilities, and booking
+              steps.
+            </p>
+            <a className="text-link" href="/investment">
+              Understand your event investment <ArrowIcon />
+            </a>
+          </div>
+          <p className="eyebrow">Prefer to email?</p>
+          <a
+            className="text-link footer-email"
+            href={"mailto:" + siteConfig.contact.bookingsEmail}
+          >
             {siteConfig.contact.bookingsEmail}
-          </a>.
-        </p>
-        <iframe
-          title="Radiant Events consultation inquiry"
-          src={siteConfig.contact.inquiryFormUrl + "?embedded=true"}
-          className="w-full rounded-sm border-0"
-          height="1300"
-          loading="lazy"
-        />
-        <p className="mt-6 text-center font-sans text-sm text-stone">
-          <a className="text-aubergine underline" href={siteConfig.contact.inquiryFormUrl} target="_blank" rel="noopener noreferrer">
-            Open the inquiry form in a new tab
           </a>
-        </p>
-      </section>
-      <section className="bg-cream px-6 py-16 text-center font-sans text-sm text-stone">
-        <p>{siteConfig.location}</p>
-        <a className="text-aubergine underline" href={"mailto:" + siteConfig.contact.bookingsEmail}>
-          {siteConfig.contact.bookingsEmail}
-        </a>
+          <p className="mt-6">Atlanta, Georgia &amp; surrounding areas.</p>
+        </aside>
+        <InquiryForm />
       </section>
     </div>
   );

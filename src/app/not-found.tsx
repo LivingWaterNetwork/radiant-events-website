@@ -4,13 +4,15 @@ import { siteConfig } from "@/lib/site-config";
 export default function NotFound() {
   return (
     <div className="mx-auto max-w-xl px-6 py-32 text-center">
-      <p className="font-sans uppercase tracking-wide-lg text-xs text-aubergine mb-4">404</p>
+      <p className="font-sans uppercase tracking-wide-lg text-xs text-aubergine mb-4">
+        404
+      </p>
       <h1 className="font-display text-4xl md:text-5xl text-ink mb-4">
         This page hasn&rsquo;t been planned yet.
       </h1>
       <p className="font-sans text-stone mb-10">
-        The page you&rsquo;re looking for may have moved. Let&rsquo;s get you back to something
-        beautifully resolved.
+        The page you&rsquo;re looking for may have moved. Let&rsquo;s get you
+        back to something beautifully resolved.
       </p>
       <div className="flex flex-wrap justify-center gap-4">
         <Link

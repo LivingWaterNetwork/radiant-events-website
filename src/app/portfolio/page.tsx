@@ -1,70 +1,75 @@
 "use client";
-
+import ArrowIcon from "@/components/ArrowIcon";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import PlaceholderMedia from "@/components/PlaceholderMedia";
 import PageHero from "@/components/sections/PageHero";
 import { portfolioProjects } from "@/content/portfolio";
-
-const CATEGORIES = ["All", "Weddings", "Corporate", "Private + Social"] as const;
-
+const categories = ["All", "Balloons + Backdrops", "Styled Moments"] as const;
 export default function PortfolioPage() {
-  const [filter, setFilter] = useState<(typeof CATEGORIES)[number]>("All");
-
-  const filtered =
-    filter === "All"
-      ? portfolioProjects
-      : portfolioProjects.filter((p) => p.category === filter);
-
+  const [filter, setFilter] = useState<string>("All");
+  const selected = portfolioProjects.filter(
+    (p) => filter === "All" || p.category === filter,
+  );
   return (
     <div>
       <PageHero
-        eyebrow="Portfolio"
-        title="Celebrations We've Held"
-        subtitle="A selection of weddings, corporate events, and private celebrations designed and produced across Atlanta."
-        mediaIndex={2}
+        eyebrow="The collection"
+        title="Celebrations with personality."
+        subtitle="A closer look at Radiant's balloon installations, backdrops, and styled focal moments. Real details. Real joy."
       />
-
-      <section className="mx-auto max-w-6xl px-6 py-16">
-        <div className="flex flex-wrap justify-center gap-3 mb-14">
-          {CATEGORIES.map((cat) => (
+      <section className="section-wrap">
+        <div className="portfolio-filters" aria-label="Filter portfolio">
+          {categories.map((c) => (
             <button
-              key={cat}
-              onClick={() => setFilter(cat)}
-              aria-pressed={filter === cat}
-              className={`rounded-full px-5 py-2 font-sans text-xs uppercase tracking-wide-lg transition-colors ${
-                filter === cat
-                  ? "bg-aubergine text-cream-light"
-                  : "bg-cream text-ink hover:bg-blush"
-              }`}
+              key={c}
+              aria-pressed={filter === c}
+              onClick={() => setFilter(c)}
             >
-              {cat}
+              {c}
             </button>
           ))}
         </div>
-
-        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-          {filtered.map((project, i) => (
-            <Link key={project.slug} href={`/portfolio/${project.slug}`} className="group block">
-              <PlaceholderMedia
-                index={i}
-                label={project.category}
-                className="aspect-[4/5] rounded-sm mb-3"
-              />
-              <h3 className="font-display text-xl text-aubergine group-hover:text-tangerine transition-colors">
-                {project.title}
-              </h3>
-              <p className="font-sans text-xs uppercase tracking-wide-lg text-stone">
-                {project.category}
-              </p>
+        <div className="portfolio-grid">
+          {selected.map((p) => (
+            <Link
+              key={p.slug}
+              href={"/portfolio/" + p.slug}
+              className="work-card"
+            >
+              <div className="work-image">
+                <Image
+                  src={p.image}
+                  alt={p.alt}
+                  fill
+                  sizes="(max-width:760px) 100vw, 33vw"
+                />
+              </div>
+              <div className="work-caption">
+                <div>
+                  <span className="eyebrow">{p.category}</span>
+                  <h3>{p.title}</h3>
+                </div>
+                <ArrowIcon />
+              </div>
             </Link>
           ))}
         </div>
-
-        <p className="text-center font-sans text-xs text-stone mt-16">
-          Placeholder projects and imagery shown — real portfolio work will replace these entries
-          as it becomes available. See CONTENT_NEEDED.md.
+      </section>
+      <section className="closing-cta">
+        <p className="eyebrow">Your occasion, your way</p>
+        <h2>
+          What will your
+          <br />
+          <em>moment look like?</em>
+        </h2>
+        <p>
+          Tell us what you&apos;re celebrating. Let&apos;s create something
+          personal.
         </p>
+        <Link href="/contact" className="button-light">
+          Start your event inquiry <ArrowIcon />
+        </Link>
       </section>
     </div>
   );

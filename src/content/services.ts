@@ -27,7 +27,7 @@ export const services: ServiceDetail[] = [
     includes: [
       "Full-service planning, from concept through event day",
       "Month-of / day-of coordination",
-      "Vendor sourcing, contracting, and management",
+      "Vendor sourcing and coordination within the agreed scope",
       "Budget tracking and timeline management",
       "On-site lead coordination and run-of-show",
     ],
@@ -42,7 +42,7 @@ export const services: ServiceDetail[] = [
       {
         question: "How far in advance should we book?",
         answer:
-          "Full-service planning works best starting 9–12 months out; month-of coordination is typically booked 4–6 weeks before the event.",
+          "Reach out as soon as you have a likely date and location. We will confirm availability and recommend a planning timeline for your scope.",
       },
       {
         question: "Do you work with our existing vendors?",
@@ -114,13 +114,13 @@ export const services: ServiceDetail[] = [
       "Scope and site details confirmed (dimensions, access, timing)",
       "Concept and material approval",
       "Installation ahead of guest arrival",
-      "Same-day or next-day breakdown",
+      "Collection or breakdown according to the confirmed arrangements",
     ],
     faq: [
       {
         question: "How much lead time do installations need?",
         answer:
-          "Most signature installations are booked 3–6 weeks out, depending on materials and scale.",
+          "Lead time depends on the design, materials, scale, and venue requirements. Share your date early so we can confirm what is possible.",
       },
       {
         question: "Can you install at any venue?",
