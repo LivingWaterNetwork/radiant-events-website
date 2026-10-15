@@ -22,7 +22,6 @@ export async function generateMetadata({
         o.title + " in Atlanta",
         o.summary,
         "/occasions/" + slug,
-        o.image,
       )
     : {};
 }

@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site-config";
+export const shareImage = {
+  url: siteConfig.url + "/brand/og-image.png",
+  width: 1200,
+  height: 630,
+  alt: "Radiant Events Planning logo",
+};
 export function pageMetadata(
   title: string,
   description: string,
   path: string,
-  image = "/images/colorful-backdrop.webp",
 ): Metadata {
   return {
     title,
@@ -15,18 +20,13 @@ export function pageMetadata(
       description,
       url: path,
       type: "website",
-      images: [
-        {
-          url: image,
-          alt: "Radiant Events Planning and event design in Atlanta",
-        },
-      ],
+      images: [shareImage],
     },
     twitter: {
       card: "summary_large_image",
       title: `${title} | Radiant Events`,
       description,
-      images: [image],
+      images: [shareImage],
     },
   };
 }
