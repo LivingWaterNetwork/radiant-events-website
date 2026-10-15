@@ -1,16 +1,16 @@
 import Link from "next/link";
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import PageHero from "@/components/sections/PageHero";
 import PlaceholderMedia from "@/components/PlaceholderMedia";
 import { Reveal } from "@/components/motion/Reveal";
 import { services } from "@/content/services";
 import { siteConfig } from "@/lib/site-config";
 
-export const metadata: Metadata = {
-  title: "Services",
-  description:
-    "Planning + Coordination, Design + Room Styling, and Signature Installations for celebrations across Atlanta.",
-};
+export const metadata = pageMetadata(
+  "Services",
+  "Planning + Coordination, Design + Room Styling, and Signature Installations for celebrations across Atlanta.",
+  "/services",
+);
 
 const FAQS = [
   {
@@ -46,9 +46,14 @@ export default function ServicesPage() {
             key={service.slug}
             className={`grid md:grid-cols-2 gap-10 items-center ${i % 2 === 1 ? "md:[&>*:first-child]:order-2" : ""}`}
           >
-            <PlaceholderMedia index={i + 1} className="aspect-[4/5] rounded-sm" />
+            <PlaceholderMedia
+              index={i + 1}
+              className="aspect-[4/5] rounded-sm"
+            />
             <Reveal>
-              <p className="font-display italic text-lg text-tangerine mb-2">{service.tagline}</p>
+              <p className="font-display italic text-lg text-tangerine mb-2">
+                {service.tagline}
+              </p>
               <h2 className="font-display text-3xl md:text-4xl text-aubergine mb-4">
                 {service.title}
               </h2>
@@ -57,7 +62,10 @@ export default function ServicesPage() {
               </p>
               <ul className="space-y-2 mb-6">
                 {service.includes.slice(0, 3).map((item) => (
-                  <li key={item} className="flex items-start gap-2 font-sans text-sm text-ink">
+                  <li
+                    key={item}
+                    className="flex items-start gap-2 font-sans text-sm text-ink"
+                  >
                     <span className="mt-2 h-1 w-1 rounded-full bg-tangerine flex-shrink-0" />
                     {item}
                   </li>
@@ -67,7 +75,7 @@ export default function ServicesPage() {
                 href={`/services/${service.slug}`}
                 className="font-sans text-sm uppercase tracking-wide-lg text-aubergine border-b border-tangerine hover:text-tangerine"
               >
-                Learn More
+                Explore {service.title}
               </Link>
             </Reveal>
           </div>
@@ -82,8 +90,12 @@ export default function ServicesPage() {
           <div className="space-y-8">
             {FAQS.map((faq) => (
               <Reveal key={faq.question}>
-                <h3 className="font-display text-xl text-aubergine mb-2">{faq.question}</h3>
-                <p className="font-sans text-sm text-stone leading-relaxed">{faq.answer}</p>
+                <h3 className="font-display text-xl text-aubergine mb-2">
+                  {faq.question}
+                </h3>
+                <p className="font-sans text-sm text-stone leading-relaxed">
+                  {faq.answer}
+                </p>
               </Reveal>
             ))}
           </div>
@@ -94,11 +106,12 @@ export default function ServicesPage() {
         <div className="mx-auto max-w-3xl px-6 py-20 text-center">
           <h2 className="font-display text-4xl mb-6">Not sure which fits?</h2>
           <p className="font-sans text-cream-light/90 mb-8">
-            Tell us about your celebration and we&rsquo;ll recommend the right level of support.
+            Tell us about your celebration and we&rsquo;ll recommend the right
+            level of support.
           </p>
           <Link
             href="/contact"
-            className="inline-block rounded-full bg-tangerine px-8 py-4 font-sans uppercase tracking-wide-lg text-sm text-ink hover:bg-coral transition-colors"
+            className="inline-block rounded-full bg-tangerine px-8 py-4 font-sans uppercase tracking-wide-lg text-sm text-cream-light hover:bg-coral transition-colors"
           >
             {siteConfig.primaryCta}
           </Link>

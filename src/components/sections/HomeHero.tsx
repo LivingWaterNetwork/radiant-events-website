@@ -1,109 +1,36 @@
-"use client";
-
+import ArrowIcon from "@/components/ArrowIcon";
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
-import PlaceholderMedia from "@/components/PlaceholderMedia";
-import { siteConfig } from "@/lib/site-config";
-
-const EASE = [0.16, 1, 0.3, 1] as const;
-
 export default function HomeHero() {
-  const shouldReduceMotion = useReducedMotion();
-
-  const imageVariants = shouldReduceMotion
-    ? {}
-    : {
-        initial: { scale: 1.08, opacity: 0 },
-        animate: {
-          scale: 1,
-          opacity: 1,
-          transition: { duration: 1.4, ease: EASE },
-        },
-      };
-
-  const item = {
-    hidden: { opacity: 0, y: 18 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: shouldReduceMotion
-        ? { duration: 0 }
-        : { duration: 0.7, delay: 0.15 + i * 0.1, ease: EASE },
-    }),
-  };
-
   return (
-    <section className="relative overflow-hidden">
-      <motion.div
-        className="absolute inset-0"
-        initial={imageVariants.initial}
-        animate={imageVariants.animate}
-      >
-        <PlaceholderMedia index={0} className="h-full w-full" label="Hero photography" />
-      </motion.div>
-      <div className="absolute inset-0 bg-ink/40" />
-
-      <div className="relative mx-auto max-w-6xl px-6 py-32 md:py-44 text-center text-cream-light">
-        <motion.p
-          custom={0}
-          initial="hidden"
-          animate="visible"
-          variants={item}
-          className="font-sans uppercase tracking-wide-lg text-sm text-tangerine mb-6"
-        >
-          {siteConfig.location} &middot; Event Planning &amp; Design
-        </motion.p>
-
-        <motion.h1
-          custom={1}
-          initial="hidden"
-          animate="visible"
-          variants={item}
-          className="font-display text-5xl md:text-7xl leading-tight mb-3"
-        >
-          {siteConfig.name}
-        </motion.h1>
-
-        <motion.p
-          custom={2}
-          initial="hidden"
-          animate="visible"
-          variants={item}
-          className="font-display italic text-2xl md:text-3xl text-blush mb-8"
-        >
-          {siteConfig.tagline}
-        </motion.p>
-
-        <motion.p
-          custom={3}
-          initial="hidden"
-          animate="visible"
-          variants={item}
-          className="font-sans text-base md:text-lg max-w-2xl mx-auto text-cream-light/90 mb-10"
-        >
-          {siteConfig.oneLiner}
-        </motion.p>
-
-        <motion.div
-          custom={4}
-          initial="hidden"
-          animate="visible"
-          variants={item}
-          className="flex flex-wrap items-center justify-center gap-4"
-        >
-          <Link
-            href="/contact"
-            className="inline-block rounded-full bg-tangerine px-8 py-4 font-sans uppercase tracking-wide-lg text-sm text-ink hover:bg-coral transition-colors"
-          >
-            {siteConfig.primaryCta}
+    <section className="cinema-hero quiet-hero" aria-label="Welcome to Radiant Events">
+      <div className="hero-orbit" aria-hidden="true" />
+      <div className="cinema-copy">
+        <p className="eyebrow">Atlanta · Planning, design &amp; decor</p>
+        <h1>
+          <span>Be in the moment.</span>
+          <em>We&apos;ll make it beautiful.</em>
+        </h1>
+        <p className="cinema-description">
+          You have a vision for how it should feel. We bring it to life with
+          thoughtful design, careful planning, and room for you to simply enjoy
+          the people you love.
+        </p>
+        <div className="hero-actions">
+          <Link href="/contact" className="button-primary">
+            Let&apos;s create your moment <ArrowIcon />
           </Link>
-          <Link
-            href="/portfolio"
-            className="inline-block rounded-full border border-cream-light/50 px-8 py-4 font-sans uppercase tracking-wide-lg text-sm text-cream-light hover:bg-cream-light/10 transition-colors"
-          >
-            {siteConfig.secondaryCta}
+          <Link href="#the-collection" className="text-link">
+            Explore the possibilities <ArrowIcon />
           </Link>
-        </motion.div>
+        </div>
+        <p className="quiet-signature">Beauty without the burden.</p>
+      </div>
+      <div className="cinema-bottom">
+        <a className="scroll-invitation" href="#meet-rickya">
+          <span>Meet the heart behind the details</span>
+          <ArrowIcon direction="down" />
+        </a>
+        <span className="hero-promise">Your people. Your vision. Your moment.</span>
       </div>
     </section>
   );

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { siteConfig } from "@/lib/site-config";
@@ -40,22 +39,17 @@ export default function SiteHeader() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-50 bg-cream-light/95 backdrop-blur border-b border-taupe/40">
-      <div className="mx-auto max-w-6xl px-6 py-3 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
-          <Image
-            src="/brand/radiant-events-logo.png"
-            alt="Radiant Events Atlanta"
-            width={220}
-            height={140}
-            className="h-16 w-auto"
-            priority
-          />
+    <header className="site-header sticky top-0 z-50 bg-cream-light/95 backdrop-blur border-b border-taupe/40">
+      <div className="header-inner">
+        <Link href="/" className="header-brand" onClick={() => setOpen(false)}>
+          <span className="header-wordmark">
+            Radiant Events<small>PLANNING · DESIGN &amp; DECOR</small>
+          </span>
         </Link>
 
         <nav
           aria-label="Primary"
-          className="hidden md:flex items-center gap-8 font-sans text-sm uppercase tracking-wide-lg text-ink"
+          className="header-nav hidden lg:flex items-center gap-5 font-sans uppercase text-ink"
         >
           {siteConfig.nav.map((link) => (
             <Link
@@ -68,7 +62,7 @@ export default function SiteHeader() {
           ))}
           <Link
             href="/contact"
-            className="rounded-full bg-aubergine px-6 py-2.5 text-cream-light hover:bg-ink-deep transition-colors focus-visible:outline-2 focus-visible:outline-tangerine focus-visible:outline-offset-4"
+            className="bg-aubergine px-6 py-2.5 text-cream-light hover:bg-ink-deep transition-colors focus-visible:outline-2 focus-visible:outline-tangerine focus-visible:outline-offset-4"
           >
             {siteConfig.primaryCta}
           </Link>
@@ -76,13 +70,20 @@ export default function SiteHeader() {
 
         <button
           ref={toggleRef}
-          className="md:hidden text-ink focus-visible:outline-2 focus-visible:outline-tangerine focus-visible:outline-offset-4 rounded-sm"
+          className="lg:hidden text-ink focus-visible:outline-2 focus-visible:outline-tangerine focus-visible:outline-offset-4 rounded-sm"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
           aria-controls="mobile-menu"
           onClick={() => setOpen(!open)}
         >
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          >
             {open ? (
               <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
             ) : (
@@ -96,7 +97,7 @@ export default function SiteHeader() {
         <div
           id="mobile-menu"
           ref={panelRef}
-          className="md:hidden border-t border-taupe/40 bg-cream-light"
+          className="lg:hidden border-t border-taupe/40 bg-cream-light"
         >
           <nav
             aria-label="Mobile"
@@ -115,7 +116,7 @@ export default function SiteHeader() {
             <Link
               href="/contact"
               onClick={() => setOpen(false)}
-              className="rounded-full bg-aubergine px-6 py-2.5 text-cream-light text-center focus-visible:outline-2 focus-visible:outline-tangerine focus-visible:outline-offset-4"
+              className="bg-aubergine px-6 py-2.5 text-cream-light text-center focus-visible:outline-2 focus-visible:outline-tangerine focus-visible:outline-offset-4"
             >
               {siteConfig.primaryCta}
             </Link>

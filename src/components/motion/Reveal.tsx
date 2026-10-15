@@ -34,7 +34,7 @@ export function Reveal({
 
   return (
     <Component
-      initial="hidden"
+      initial={false}
       whileInView="visible"
       viewport={{ once: true, margin: "-80px" }}
       variants={variants}
@@ -67,7 +67,7 @@ export function Stagger({
 
   return (
     <motion.div
-      initial="hidden"
+      initial={false}
       whileInView="visible"
       viewport={{ once: true, margin: "-80px" }}
       variants={container}
@@ -93,7 +93,11 @@ export function StaggerItem({
     ? { hidden: { opacity: 1, y: 0 }, visible: { opacity: 1, y: 0 } }
     : {
         hidden: { opacity: 0, y },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.6, ease: EASE },
+        },
       };
 
   return (

@@ -1,13 +1,14 @@
 import Link from "next/link";
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import PageHero from "@/components/sections/PageHero";
 import { Reveal } from "@/components/motion/Reveal";
 import { journalArticles } from "@/content/journal";
 
-export const metadata: Metadata = {
-  title: "Journal",
-  description: "Planning education, design inspiration, and venue insights from Radiant Events.",
-};
+export const metadata = pageMetadata(
+  "Journal",
+  "Planning education, design inspiration, and venue insights from Radiant Events.",
+  "/journal",
+);
 
 export default function JournalPage() {
   return (
@@ -29,7 +30,9 @@ export default function JournalPage() {
               <h2 className="font-display text-3xl text-ink group-hover:text-aubergine transition-colors mb-2">
                 {article.title}
               </h2>
-              <p className="font-sans text-sm text-stone leading-relaxed">{article.excerpt}</p>
+              <p className="font-sans text-sm text-stone leading-relaxed">
+                {article.excerpt}
+              </p>
             </Link>
           </Reveal>
         ))}

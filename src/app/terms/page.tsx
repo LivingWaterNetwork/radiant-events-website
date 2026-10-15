@@ -1,30 +1,42 @@
 import type { Metadata } from "next";
-import { siteConfig } from "@/lib/site-config";
-
 export const metadata: Metadata = {
-  title: "Terms of Service",
+  title: "Website & Booking Information",
+  description:
+    "Understand Radiant Events website information, custom proposals, booking agreements, and payment responsibilities.",
+  alternates: { canonical: "/terms" },
 };
-
-export default function TermsPage() {
+export default function Terms() {
   return (
-    <div className="mx-auto max-w-2xl px-6 py-20">
-      <h1 className="font-display text-4xl text-ink mb-8">Terms of Service</h1>
-      <div className="prose-sm font-sans text-ink space-y-4 leading-relaxed">
-        <p className="rounded-sm border border-tangerine/40 bg-cream px-5 py-4 text-sm text-stone">
-          Placeholder terms. {siteConfig.name} must review and finalize this page with legal
-          counsel before launch — see <code className="text-aubergine">CONTENT_NEEDED.md</code>.
-        </p>
+    <article className="mx-auto max-w-2xl px-6 py-20">
+      <p className="eyebrow">Before booking</p>
+      <h1 className="font-display text-5xl mb-8">
+        Website &amp; booking information
+      </h1>
+      <div className="space-y-6 text-sm leading-relaxed">
         <p>
-          This placeholder outlines the general structure a finished terms page should cover: use
-          of this website, the fact that submitting the consultation form does not create a
-          binding service agreement, and that all engagements are governed by a separate signed
-          contract between {siteConfig.name} and the client.
+          This website introduces Radiant Events, our services, and selected
+          design work. Photography shows individual installations; each new
+          design is scoped to its venue, materials, and celebration.
         </p>
+        <h2 className="text-2xl">An inquiry starts a conversation</h2>
         <p>
-          It should also address intellectual property in site content and photography, and a
-          limitation of liability appropriate to a services business.
+          Submitting the inquiry form does not reserve a date, confirm pricing,
+          or create a service agreement. Availability and the scope of your
+          event are confirmed directly with Radiant.
+        </p>
+        <h2 className="text-2xl">Your custom proposal</h2>
+        <p>
+          Services, design details, delivery, installation, takedown, and any
+          booking or payment requirements are discussed for your event and set
+          out in your individual proposal or agreement. Website descriptions do
+          not replace those agreed details.
+        </p>
+        <h2 className="text-2xl">Photography &amp; content</h2>
+        <p>
+          Contact Radiant before reusing the branding, photography, or original
+          website content.
         </p>
       </div>
-    </div>
+    </article>
   );
 }

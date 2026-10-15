@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/site-config";
+import { occasions } from "@/content/occasions";
 import { services } from "@/content/services";
 import { portfolioProjects } from "@/content/portfolio";
 import { journalArticles } from "@/content/journal";
@@ -13,11 +14,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/process",
     "/journal",
     "/contact",
+    "/occasions",
+    "/investment",
+    "/faq",
+    "/client-guide",
     "/privacy",
     "/terms",
   ];
 
   const dynamicRoutes = [
+    ...occasions.map((o) => `/occasions/${o.slug}`),
     ...services.map((s) => `/services/${s.slug}`),
     ...portfolioProjects.map((p) => `/portfolio/${p.slug}`),
     ...journalArticles.map((a) => `/journal/${a.slug}`),
@@ -25,6 +31,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [...staticRoutes, ...dynamicRoutes].map((route) => ({
     url: `${siteConfig.url}${route}`,
-    lastModified: new Date(0),
+    lastModified: new Date("2026-10-09"),
   }));
 }
